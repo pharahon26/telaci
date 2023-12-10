@@ -3,7 +3,7 @@
     <div class="container">
         @include('components.message')
         <center>
-            <img src="{{ asset('assets/img/users/photo') }}/{{ $dataProfil->photo }}" width="100px" height="100px"
+            <img src="{{ asset(auth()->user()->photo_profil)}}" width="100px" height="100px"
                 alt="">
         </center>
         <form action="{{ route('profil.update', $dataProfil->id) }}" method="post" enctype="multipart/form-data">
@@ -65,7 +65,7 @@
                 </div>
 
                 <center>
-                    <button type="submit" class="btn btn-warning">JE CONFIRME MES INFORMATIONS PERSONNELLES</button>
+                    <button type="submit" class="btn btn-primary">JE CONFIRME MES INFORMATIONS PERSONNELLES</button>
                 </center>
             </div>
         </form>

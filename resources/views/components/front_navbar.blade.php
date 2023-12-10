@@ -49,7 +49,7 @@
     }
 
     .link-container a {
-        font-size: 13px;
+        font-size: 20px;
         font-weight: 500;
         color: black;
         text-decoration: none;
@@ -69,7 +69,7 @@
 
     .button-container {
         display: flex;
-        width: 32rem;
+        width: 62rem;
         justify-content: space-between;
     }
 
@@ -79,12 +79,12 @@
         justify-content: center;
         align-items: center;
         height: 2.5rem;
-        width: 10rem;
+        width: 20rem;
         color: black;
         font-weight: bold;
         text-decoration: none;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 14px;
         border: 3px solid black;
         background-color: white;
         border-radius: 3rem;
@@ -267,12 +267,16 @@
                 <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModale">
                     Verifier mon pass
                 </button>
+                <a href="{{ route('passvisite.index') }}">Acheter un pass</a>
+                <a href="{{ route('abonnement.show_form') }}">Souscrire abonnement</a>
             @else
                 <a href="{{ route('login.index') }}">Se connecter</a>
                 <a href="{{ route('inscription.create') }}">S'abonner</a>
                 <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModale">
                     Verifier mon pass
                 </button>
+                <a href="{{ route('passvisite.index') }}">Acheter un pass</a>
+                <a href="{{ route('abonnement.show_form') }}">Souscrire abonnement</a>
             @endif
         </div>
 
@@ -285,12 +289,15 @@
                 <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModale">
                     Verifier mon pass
                 </button>
+                <a href="{{ route('passvisite.index') }}">Acheter un pass</a>
+                <a href="{{ route('abonnement.show_form') }}">Souscrire abonnement</a>
                 <a href="{{ route('about') }}" class="{{ Request::is('a-propos') ? 'active' : '' }}">A propos</a>
                 <a href="{{ route('maison.choix') }}" class="{{ Request::is('maisons/choix') ? 'active' : '' }}">Maison à
                     louer</a>
                 <a href="{{ route('ebanking.index') }}" class="{{ Request::is('finance') ? 'active' : '' }}">Tela
                     finance</a>
-                <a href="{{ route('tv.index') }}" class="{{ Request::is('programmes_tv') ? 'active' : '' }}">CGU</a>
+                <a href="{{ route('tv.index') }}" class="{{ Request::is('programmes_tv') ? 'active' : '' }}">Tela TV</a>
+                <a href="{{ route('condition.index') }}" class="{{ Request::is('condition') ? 'active' : '' }}">CGU</a>
                 <a href="{{ route('contact') }}" class="{{ Request::is('contact') ? 'active' : '' }}">Contacts</a>
             @else
                 <a href="{{ route('index') }}" class="{{ Request::is('/') ? 'active' : '' }}">Accueil</a>
@@ -299,13 +306,15 @@
                 <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModale">
                     Verifier mon pass
                 </button>
+                <a href="{{ route('passvisite.index') }}">Acheter un pass</a>
+                <a href="{{ route('abonnement.show_form') }}">Souscrire abonnement</a>
                 <a href="{{ route('about') }}" class="{{ Request::is('a-propos') ? 'active' : '' }}">A propos</a>
                 <a href="{{ route('maison.choix') }}" class="{{ Request::is('maisons/choix') ? 'active' : '' }}">Maison à
                     louer</a>
                 <a href="{{ route('ebanking.index') }}" class="{{ Request::is('finance') ? 'active' : '' }}">Tela
                     finance</a>
                 <a href="{{ route('tv.index') }}" class="{{ Request::is('programmes_tv') ? 'active' : '' }}">Tela TV</a>
-                <a href="{{ route('tv.index') }}" class="{{ Request::is('programmes_tv') ? 'active' : '' }}">CGU</a>
+                <a href="{{ route('condition.index') }}" class="{{ Request::is('condition') ? 'active' : '' }}">CGU</a>
                 <a href="{{ route('contact') }}" class="{{ Request::is('contact') ? 'active' : '' }}">Contacts</a>
             @endauth
         </div>
@@ -318,7 +327,7 @@
             louer</a>
         <a href="{{ route('ebanking.index') }}" class="{{ Request::is('finance') ? 'active' : '' }}">Tela finance</a>
         <a href="{{ route('tv.index') }}" class="{{ Request::is('programmes_tv') ? 'active' : '' }}">Tela TV</a>
-        <a href="{{ route('tv.index') }}" class="{{ Request::is('programmes_tv') ? 'active' : '' }}">CGU</a>
+        <a href="{{ route('condition.index') }}" class="{{ Request::is('condition') ? 'active' : '' }}">CGU</a>
         <a href="{{ route('contact') }}" class="{{ Request::is('contact') ? 'active' : '' }}">Contacts</a>
     </div>
     @if (!Request::is('contact') && !Request::is('programmes_tv') && !Request::is('finance'))

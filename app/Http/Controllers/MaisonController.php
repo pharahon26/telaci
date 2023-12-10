@@ -253,7 +253,7 @@ class MaisonController extends Controller
     public function indexCatalogue()
     {
         $auth_user_id = Auth::user()->id;
-        $datas = Place::where('user_id',$auth_user_id)->get();
+        $datas = Place::where('user_id',$auth_user_id)->OrderBy('id','DESC')->get();
         return view('front.catalogue.index',compact('datas'));
     }
 
@@ -678,6 +678,7 @@ class MaisonController extends Controller
         $data_place = Place::where('ref',$ref)->first();
         $data = Place::findOrFail($data_place->id);
         $images = Image::where('place_id',$data_place->id)->get();
+        //dd($images);
         return view('front.catalogue.show',
             compact('data','images'));
     }
@@ -708,38 +709,116 @@ class MaisonController extends Controller
         $courarriere = $request->has_COUR_ARRIERE;
         $balconavant = $request->has_balcon_avant;
         $balconarriere = $request->has_balcon_arriere;
-        if ($couravant=='on')
+        $hasgardien = $request->has_GARDIEN;
+        $hasgarage = $request->has_GARAGE;
+        $haspiscine = $request->has_PISCINE;
+        if ($couravant==='on')
         {
             $request->has_COUR_AVANT=1;
         }else
         {
             $request->has_COUR_AVANT=0;
         }
-        if ($courarriere=='on')
+        if ($courarriere==='on')
         {
             $request->has_COUR_ARRIERE=1;
         }else
         {
             $request->has_COUR_ARRIERE=0;
         }
-        if ($balconavant=='on')
+        if ($balconavant==='on')
         {
             $request->has_balcon_avant=1;
         }else
         {
             $request->has_balcon_avant=0;
         }
-        if ($balconarriere=='on')
+        if ($balconarriere==='on')
         {
             $request->has_balcon_arriere=1;
         }else
         {
             $request->has_balcon_arriere=0;
         }
+        if ($hasgardien==='on')
+        {
+            $request->has_GARDIEN=1;
+        }else
+        {
+            $request->has_GARDIEN=0;
+        }
+        if ($hasgarage==='on')
+        {
+            $request->has_GARAGE=1;
+        }else
+        {
+            $request->has_GARAGE=0;
+        }
+        if ($haspiscine==='on')
+        {
+            $request->is_HAUT_STANDING=1;
+            $request->has_PISCINE=1;
+        }else
+        {
+            $request->is_HAUT_STANDING=1;
+            $request->has_PISCINE=0;
+        }
+
+        switch ($request->type_maison) {
+            case "0":
+                $studio =1;
+                $chambre = 0;
+                $residence = 0;
+                $appartement = 0;
+                $maisonbasse = 0;
+                $duplexe = 0;
+                break;
+            case "1":
+                $studio =0;
+                $chambre = 1;
+                $residence = 0;
+                $appartement = 0;
+                $maisonbasse = 0;
+                $duplexe = 0;
+                break;
+            case "2":
+                $studio =0;
+                $chambre = 0;
+                $residence = 1;
+                $appartement = 0;
+                $maisonbasse = 0;
+                $duplexe = 0;
+                break;
+            case "3":
+                $studio =0;
+                $chambre = 0;
+                $residence = 0;
+                $appartement = 1;
+                $maisonbasse = 0;
+                $duplexe = 0;
+                break;
+            case "4":
+                $studio =0;
+                $chambre = 0;
+                $residence = 0;
+                $appartement = 0;
+                $maisonbasse = 1;
+                $duplexe = 0;
+                break;
+
+            default:
+                $studio =0;
+                $chambre = 0;
+                $residence = 0;
+                $appartement = 0;
+                $maisonbasse = 0;
+                $duplexe = 1;
+
+        }
         //traitement photo de couverture
         $photo_couverture=$request->file('photo_couverture');
         $photoCouvertureName=time().'.'. $photo_couverture->extension();
-        $photo_couverture->move('assets/img/places', $photoCouvertureName);
+        $photo_couverture = $photo_couverture->move('assets/img/places', $photoCouvertureName);
 
         //on compte le nb d'enregistrement existant
         $count = Place::count('id');
@@ -753,14 +832,14 @@ class MaisonController extends Controller
                 'user_id'=>Auth::user()->id,
                 'description'=>$request->description,
                 'created_at'=>now(),
-                'is_Studio'=>$request->is_Studio,
-                'is_Chambre'=>$request->is_Chambre,
+                'is_Studio'=>$studio,
+                'is_Chambre'=>$chambre,
                 'is_occupe'=>0,
-                'is_Residence'=>$request->is_Residence,
-                'is_Appartment'=>$request->is_Appartment,
+                'is_Residence'=>$residence,
+                'is_Appartment'=>$appartement,
                 'is_Bureau'=>0,
-                'is_MAISON_BASSE'=>$request->is_MAISON_BASSE,
-                'is_DUPLEX'=>$request->is_DUPLEX,
+                'is_MAISON_BASSE'=>$maisonbasse,
+                'is_DUPLEX'=>$duplexe,
                 'has_PISCINE'=>$request->has_PISCINE,
                 'is_HAUT_STANDING'=>$request->is_HAUT_STANDING,
                 'has_COUR_AVANT'=>$request->has_COUR_AVANT,
@@ -774,7 +853,7 @@ class MaisonController extends Controller
                 'is_validated'=>0,
                 'commune_id'=>$request->commune_id,
                 'image_id'=>$count+1,
-                'photo_couverture'=>$photoCouvertureName,
+                'photo_couverture'=>$photo_couverture,
                 'ref'=>uniqid()
 
             ]
@@ -782,22 +861,28 @@ class MaisonController extends Controller
         //traitement des autres photo
         for($i = 1; $i < 10; $i++)
         {
-            $photo ='photo';
-            $photo =$request->file('photo'.$i);
-            //dd($photo);
-            $photoName=uniqid().'.'. $photo->extension();
-            $photo->move('assets/img/places', $photoName);
-            Image::create(
-                [
-                    'place_id'=>$data->image_id,
-                    'url'=>$photoName,
-                    'created_at'=>now(),
-                ]
-            );
+            if($request->file('photo'.$i)!=null)
+            {
+                $photo ='photo';
+                $photo =$request->file('photo'.$i);
+                //dd($photo);
+                $photoName=uniqid().'.'. $photo->extension();
+                $photo = $photo->move('assets/img/places', $photoName);
+
+                Image::create(
+                    [
+                        'place_id'=>$data->id,
+                        'url'=>$photo,
+                        'created_at'=>now(),
+                    ]
+                );
+            }
+
+
         }
         if($data)
         {
-            return redirect()->back()->with('success','Maison enregistrée avec succès');
+            return redirect()->route('catalogue.index')->with('success','Maison enregistrée avec succès');
         }
 
     }

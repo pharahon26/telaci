@@ -14,7 +14,7 @@
             align-items: center;
             justify-content: space-evenly;
             flex-direction: column;
-            border: 3px solid #1e9dfe;
+            border: 3px solid #0451b0;
             border-radius: 4px;
             gap: 50px;
             max-width: 80%;
@@ -25,13 +25,12 @@
             /* Centrage horizontal */
             height: 80vh;
             /* 80% de la hauteur de l'écran */
-            justify-content: center;
             /* Centrage vertical */
         }
 
         .login-form-container .text {
             font-size: 45px;
-            color: #1e9dfe;
+            color: #0451b0;
         }
 
         .input-field {
@@ -39,10 +38,11 @@
             border: 2px solid #1e9dfe;
             padding: 8px;
             border-radius: 4px;
+            margin-bottom: 10px;
         }
 
         .button {
-            background-color: #1e9dfe;
+            background-color: #0451b0;
             color: white;
             font-weight: 600;
             border: none;
@@ -85,6 +85,7 @@
 
             .input-field {
                 width: 90%;
+                margin-bottom: 10px;
             }
         }
 
@@ -103,10 +104,14 @@
             @csrf
             @include('components.message')
             <h1 class="text">Connexion</h1>
-            <input type="text" name="phone" class="input-field" value="{{ old('phone') }}"
-                placeholder="Numéro de téléphone" required>
-            <input type="password" name="password" class="input-field" value="{{ old('password') }}"
-                placeholder="Mot de passe" required>
+            <center>
+                <div class="">
+                    <input type="text" name="phone" class="input-field" value="{{ old('phone') }}"
+                           placeholder="Numéro de téléphone" required>
+                    <input type="password" name="password" class="input-field" value="{{ old('password') }}"
+                           placeholder="Mot de passe" required>
+                </div>
+            </center>
 
             <button type="submit" class="button">Connexion</button>
 

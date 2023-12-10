@@ -12,7 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'http://127.0.0.1/tela/public/*',
+        'http://127.0.0.1/telaci/public/*',
         '/api/*',
     ];
 }

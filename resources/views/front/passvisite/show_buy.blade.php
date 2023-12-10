@@ -111,7 +111,9 @@
                     <div class="card-body text-center">
                         <h3 class="text-center">Confirmation du paiement du pass visite</h3>
                         <h4 class="text-danger">{{$dataPassVisite->name}}: {{$dataPassVisite->price}} F</h4> <br>
-                        <p>Veuillez patienter pendant la connexion au serveur de CINETPAY</p>
+                        <h3 class="text-center text-danger">Service indisponible avant le 15 Décembre 2023</h3>
+
+                    {{--                        <p>Veuillez patienter pendant la connexion au serveur de CINETPAY</p>--}}
                     <!--                        <button onclick="payer({{$dataPassVisite}})" class="btn btn-success">
                             PAYER {{$dataPassVisite->price}} F VIA CINETPAY
                         </button>-->

@@ -14,27 +14,27 @@
             align-items: center;
             justify-content: space-evenly;
             flex-direction: column;
-            border: 3px solid #1e9dfe;
+            /*border: 3px solid #1e9dfe;*/
             border-radius: 4px;
             gap: 20px;
             width: 800px;
             /* Largeur fixe du formulaire */
             margin: 0 auto;
             /* Centrage horizontal */
-            height: 80vh;
+            height: 100vh;
             /* 80% de la hauteur de l'écran */
-            justify-content: center;
             /* Centrage vertical */
         }
 
         .registration-form-container .text {
             font-size: 45px;
-            color: #1e9dfe;
+            color: #0451b0;
+            margin-top: 100px;
         }
 
         .input-field {
             width: 80%;
-            border: 2px solid #1e9dfe;
+            border: 2px solid #0451b0;
             padding: 8px;
             border-radius: 4px;
         }
@@ -54,7 +54,7 @@
         }
 
         .button {
-            background-color: #1e9dfe;
+            background-color: #0451b0;
             color: white;
             font-weight: 600;
             border: none;
@@ -66,7 +66,7 @@
 
 
         .button:hover {
-            background-color: #009fb8;
+            background-color: #0451b0;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
@@ -131,9 +131,8 @@
     <div class="registration-form-container">
         <form action="{{ route('inscription.store') }}" method="post" enctype="multipart/form-data" >
             @csrf
-            @include('components.message')
             <h1 class="text">Inscription</h1>
-
+            @include('components.message')
             <input type="text" name="name" class="input-field" value="{{ old('name') }}" required
                 placeholder="Nom & Prenom">
             <input type="text" name="phone" class="input-field" placeholder="Numéro de téléphone"
@@ -149,13 +148,18 @@
             <input type="password" name="password_confirmation" placeholder="Confirmer le mot de passe" class="input-field"
                 value="{{ old('password_confirmation') }}" required>
 
-            <label for="" class="text-black">Devenir démarcheur</label>
+            <a href="{{route('condition.index')}}">Consulter les conditions générales d'utilisations</a>
+
+            <label for="" class="text-black">Accepter les conditions générales d'utilisations</label>
             <div>
-                Oui <input type="radio" name="is_demarcheur" class="" value="1" checked>
-                Non <input type="radio" name="is_demarcheur" class="" value="0">
+                <input type="checkbox" name="accepter" class="form-check-input">
+<!--
+                Oui <input type="radio" name="accepter" class="" value="1" checked>
+                Non <input type="radio" name="accepter" class="" value="0">-->
             </div>
+
             <button type="submit" class="button">CREER VOTRE PROFIL</button>
+
         </form>
-        <a href="/">Retourner à la page d&apos;accueil</a>
     </div>
 @endsection

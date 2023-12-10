@@ -127,33 +127,13 @@
         }
     </style>
 
-    <script type="text/javascript">
-
-        var lien
-        var lecteur = document.getElementById("pub");
-        var source = document.createElement('source');
-
-
-        fetch("http://localhost/tela/public/programmes_tv/lien_pub").then((response) => response.json())
-            .then((json) => {
-                lien = json["link"]
-                lien = 'http://localhost/tela/public/assets/videos/'+lien;
-
-                console.log(lien);
-                source.setAttribute('src', lien);
-                source.setAttribute('type', 'video/mp4');
-
-                lecteur.appendChild(source);
-                lecteur.play();
-                //console.log(lien)
-            });
-    </script>
 
     <div class="telatv-container">
         <div class="video-container">
-            <video id="pub" autoplay loop muted>
-                {{--                <source src="{{ URL::asset('assets/img/movie1.mp4') }}" type="video/mp4">--}}
-            </video>
+            <video id="pub" autoplay loop muted="muted">
+{{--              <source src="{{ URL::asset('assets/img/movie1.mp4') }}" type="video/mp4"> --}}
+
+           </video>
         </div>
         <div class="telatv-grid-container">
             @foreach($datas as $data)
@@ -163,4 +143,29 @@
             @endforeach
         </div>
     </div>
+    <script type="text/javascript">
+
+        var lien
+        var lecteur = document.getElementById("pub");
+        var source = document.createElement('source');
+
+
+        fetch("http://localhost/telaci/public/programmes_tv/lien_pub").then((response) => response.json())
+            .then((json) => {
+                lien = json["link"]
+                // lien = 'http://localhost/telaci/public/assets/videos/'+lien;
+
+                source.setAttribute('src', lien);
+                source.setAttribute('type', 'video/mp4');
+
+                lecteur.appendChild(source);
+                lecteur.getAttribute('src');
+
+                //lecteur.src = lien;
+                lecteur.play();
+
+            });
+    </script>
+
 @endsection
+

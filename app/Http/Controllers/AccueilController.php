@@ -26,6 +26,11 @@ class AccueilController extends Controller
         return view('contact');
     }
 
+    public function condition()
+    {
+        return view('condition');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

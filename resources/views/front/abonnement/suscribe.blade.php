@@ -94,7 +94,10 @@
                     <div class="card-body text-center">
                         <h3 class="text-center">Confirmation de souscription de l'abonnement</h3>
                         <h4 class="text-danger">Souscription {{$dataAbonnement->title}}: {{$dataAbonnement->price}} F</h4> <br>
-                        <p>Veuillez patienter pendant la connexion au serveur de CINETPAY</p>
+                        <h3 class="text-center text-danger">Service indisponible avant le 15 Décembre 2023</h3>
+
+
+                    {{--                        <p>Veuillez patienter pendant la connexion au serveur de CINETPAY</p>--}}
                     <!--                        <button onclick="payer({{$dataAbonnement}})" class="btn btn-success">
                             PAYER {{$dataAbonnement->price}} F VIA CINETPAY
                         </button>-->

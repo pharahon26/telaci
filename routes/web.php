@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'AccueilController@index')->name('index');
 Route::get('/a-propos', 'AccueilController@about')->name('about');
 Route::get('/contact', 'AccueilController@contact')->name('contact');
-Route::view('/tela-tv', 'telatv')->name('telatv');
+Route::get('/condition', 'AccueilController@condition')->name('condition.index');
 
 Route::group(['prefix' => 'api'], function (){
 
@@ -252,6 +252,7 @@ Route::group(['prefix'=>'programmes_tv'], function()
     Route::get('{id}/list', 'ProgrammeTvController@listProgramme')->name('programmes_tv.listbycategorie');
     //      END
     Route::get('/list', 'ProgrammeTvController@list')->name('programmes_tv.index');
+    Route::get('/lien_pub', 'ProgrammeTvController@lienPub')->name('programmes_tv.lien');
     Route::get('/create', 'ProgrammeTvController@create')->name('programmes_tv.create');
     Route::post('/create', 'ProgrammeTvController@store')->name('programmes_tv.store');
     Route::get('{id}/show', 'ProgrammeTvController@show')->name('programmes_tv.show');

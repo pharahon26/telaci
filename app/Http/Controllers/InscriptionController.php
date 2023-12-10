@@ -377,7 +377,6 @@ class InscriptionController extends Controller
                 {
                     $dayAfter = (now())->format('Y-m-d');
                     $data = Abonnement::where('user_id', '=',$checkUser->id)->where('end_date', '>', $dayAfter)->get();
-
                     return redirect()->route('profil.index', compact('data'));
                 }
                 else
@@ -419,11 +418,11 @@ class InscriptionController extends Controller
         //dd($id);
         $cni_recto=$request->file('cni_recto');
         $cniRectoName=uniqid().'.'. $cni_recto->extension();
-        $cni_recto->move('assets/img/users/pieces', $cniRectoName);
+        $cni_recto = $cni_recto->move('assets/img/users/pieces', $cniRectoName);
 
         $cni_verso=$request->file('cni_verso');
         $cniVersoName=uniqid().'.'. $cni_verso->extension();
-        $cni_verso->move('assets/img/users/pieces', $cniVersoName);
+        $cni_verso = $cni_verso->move('assets/img/users/pieces', $cniVersoName);
         //on update les info dans la table informationIdentity
         $dataInfo = InformationIdenty::where('user_id',$id)->first();
         $data = InformationIdenty::findOrFail($dataInfo->id);
@@ -437,8 +436,8 @@ class InscriptionController extends Controller
         $data->nationalite = $request->nationalite;
         //$data->pays = $request->pays;
         $data->domicile = $request->domicile;
-        $data->cni_recto = $cniRectoName;
-        $data->cni_verso = $cniVersoName;
+        $data->cni_recto = $cni_recto;
+        $data->cni_verso = $cni_verso;
         $data->numero_cni = $request->numero_cni;
         $data->updated_at = now();
         $data->save();
@@ -462,12 +461,18 @@ class InscriptionController extends Controller
     {
         $chechPhoneNumber = Validator::make($request->all(),
             [
-                'phone'=>'unique:users'
+                'phone1'=>'unique:information_identies'
             ]);
         $validatorPassword = Validator::make($request->all(),
             [
                 'password'=>'confirmed'
             ]);
+
+
+        if($request->accepter!='on')
+        {
+            return back()->withInput()->with('error','Veuillez accepter nos conditions d\'utilisation');
+        }
         if($chechPhoneNumber->fails())
         {
             return back()->withInput()->with('error','Cet numero de télephone appartient dèja
@@ -481,14 +486,14 @@ class InscriptionController extends Controller
         {
             $photo=$request->photo;
             $photoName=time().'.'. $photo->extension();
-            $photo->move('assets/img/users/photo', $photoName);
+            $photo = $photo->move('assets/img/users/photo', $photoName);
             $data = User::create(
                 [
                     'name'=>$request->name,
-                    //'email'=>$request->email,
+                    'photo_profil'=>$photo,
                     'phone'=>$request->phone,
                     'created_at'=>now(),
-                    'is_demarcheur'=>$request->is_demarcheur,
+                    'is_demarcheur'=>1,
                     'password'=>Hash::make($request->password),
                     'is_validated'=>false,
                     'balance'=>0,
@@ -500,7 +505,7 @@ class InscriptionController extends Controller
             $identity = InformationIdenty::create(
                 [
                     'name'=>$data->name,
-                    'photo'=>$photoName,
+                    'photo'=>$photo,
                     'phone1'=>$data->phone,
                     'created_at'=>now(),
                     'user_id'=>$data->id,

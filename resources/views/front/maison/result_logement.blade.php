@@ -25,14 +25,7 @@
                                 <td>{{$data->nombre_piece}} piece(s)</td>
                                 <td>{{$data->price}}F</td>
                                 <td>{{$data->commune->name}}</td>
-                                <td>
-                                    @if($data->has_COUR_AVANT==1) *Cour avant @endif <br>
-                                    @if($data->has_COUR_ARRIERE==1) *Cour arriere @endif <br>
-                                    @if($data->has_GARDIEN==1) *Avec gardien @endif <br>
-                                    @if($data->has_GARAGE==1) *Avec garage @endif <br>
-                                    @if($data->has_balcon_avant==1) *Avec balcon avant @endif <br>
-                                    @if($data->has_balcon_arriere==1) *Avec balcon arriere @endif <br>
-                                </td>
+
                                 <td>
                                     <button type="button" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                         Consulter les photos du logement

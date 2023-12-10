@@ -85,7 +85,7 @@ class ProgrammeTvController extends Controller
     {
         $date = '2023-12-08';
         $datas =  ProgrammeTv::where('categorie_programme_tv_id',1)
-            ->where('date_diffusion','>=',$date)->first();
+            ->where('date_diffusion','>=',$date)->inRandomOrder()->first();
         //dd($datas);
         return response()->json($datas);
 
