@@ -21,6 +21,7 @@ class CreateProgrammeTvsTable extends Migration
             $table->date('date_diffusion');
             $table->string('link');
             $table->longText('description');
+            $table->integer('duree')->nullable();
             $table->timestamps();
 
             $table->unsignedBigInteger('categorie_programme_tv_id')->index()->nullable();

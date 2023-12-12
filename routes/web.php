@@ -54,6 +54,9 @@ Route::group(['prefix' => 'api'], function (){
         Route::post('/createFromMobile', 'InscriptionController@addUserFromMobileApp');
         Route::get('{id}/show', 'InscriptionController@showUser');
         Route::post('/update', 'InscriptionController@updateUserProfil');
+        //pour update le mot de passe
+        Route::get('{id}/change', 'InscriptionController@updateUserPassword')->name('profil.update_password');
+        //end
         Route::get('{id}/delete', 'InscriptionController@deleteUser');
     });
 
@@ -198,6 +201,8 @@ Route::group(['prefix'=>'profil'], function()
     Route::get('/', 'InscriptionController@indexProfil')->name('profil.index');
     Route::get('/{id}/edit', 'InscriptionController@editProfil')->name('profil.edit');
     Route::get('/{id}/show', 'InscriptionController@showProfil')->name('profil.show');
+    Route::get('/change', 'InscriptionController@showFormChangePassword')->name('profil.change');
+    Route::get('{id}/change', 'InscriptionController@changePassword')->name('profil.updatepassword');
     Route::post('/{id}/update', 'InscriptionController@updateProfil')->name('profil.update');
 });
 //catalogue
@@ -259,6 +264,18 @@ Route::group(['prefix'=>'programmes_tv'], function()
     Route::get('{id}/edit', 'ProgrammeTvController@edit')->name('programmes_tv.edit');
     Route::post('{id}/update', 'ProgrammeTvController@update')->name('programmes_tv.update');
     Route::get('{id}/delete', 'ProgrammeTvController@delete')->name('programmes_tv.delete');
+});
+
+Route::group(['prefix'=>'liste_diffusion'], function()
+{
+    Route::get('{date}/list', 'ListeDiffusionController@list')->name('liste_diffusion.list');
+    Route::get('/{channel}/videodujour/', 'ListeDiffusionController@videoJour')->name('liste_diffusion.videojour');
+    Route::get('/create', 'ListeDiffusionController@create')->name('liste_diffusion.create');
+    Route::post('/create', 'ListeDiffusionController@store')->name('liste_diffusion.store');
+    Route::get('{id}/show', 'ListeDiffusionController@show')->name('liste_diffusion.show');
+    Route::get('{id}/edit', 'ListeDiffusionController@edit')->name('liste_diffusion.edit');
+    Route::post('{id}/update', 'ListeDiffusionController@update')->name('liste_diffusion.update');
+    Route::get('{id}/delete', 'ListeDiffusionController@destroy')->name('liste_diffusion.delete');
 });
 
 Route::group(['prefix'=>'categorie_programme_tv'], function()

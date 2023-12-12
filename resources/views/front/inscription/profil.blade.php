@@ -6,6 +6,7 @@
             <h3>Mon profil</h3>
             <img src="{{asset(auth()->user()->photo_profil)}}" alt="" width="150px" height="150px">
             <h4 class="text-uppercase text-black">Bienvenue {{auth()->user()->name}}</h4>
+            @include('components.message')
             @if(auth()->user()->is_completed==0)
                 <p class="text-black">
                     Votre profil n'est pas complet. <a href="{{route('profil.edit',auth()->user()->id)}}" class="btn btn-warning">Cliquez  ici pour le completer</a>
@@ -18,6 +19,8 @@
                 @endif
                 <a href="{{route('catalogue.index')}}" class="btn btn-primary btn-lg">Acceder à mon catalogue</a><br><br>
                     <a href="{{route('profil.show',auth()->user()->id)}}" class="btn btn-primary btn-lg">Voir mes informations</a>
+                    <br><br>
+                    <a href="{{route('profil.change')}}" class="btn btn-primary btn-lg">Modifier mon mot de passe</a>
                     <br><br>
                 <a href="{{route('abonnement.show_form')}}" class="btn btn-success btn-lg">Souscrire à un abonnement</a>
                     <br><br>

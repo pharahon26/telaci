@@ -8,6 +8,7 @@ use App\PassVisite;
 use App\Place;
 use App\VisiteEffectue;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class MaisonController extends Controller
@@ -15,7 +16,7 @@ class MaisonController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
+     * @return \Illuminate\Http\JsonResponse
      */
 
 
@@ -561,7 +562,6 @@ class MaisonController extends Controller
 
     public function consulterLogement(Request $request, $ref)
     {
-
         $code = $request->code;
         //on verifie si le code existe dans notre table passvisite de la db
         $checkCode = PassVisite::where('code',$code)->where('is_expired',0)->first();

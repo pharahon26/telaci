@@ -21,7 +21,7 @@
                         <tbody>
                         @foreach($data_search as $data)
                             <tr>
-                                <td>{{$data->id}}</td>
+                                <td>N°{{$data->ref}}</td>
                                 <td>{{$data->nombre_piece}} piece(s)</td>
                                 <td>{{$data->price}}F</td>
                                 <td>{{$data->commune->name}}</td>
@@ -45,7 +45,9 @@
                                                 <form action="{{route('maison.show.logement',$data->ref)}}" method="get">
                                                     @csrf
                                                     <input type="text" name="code" required value="{{$cookiePassVisite}}" class="form-control"> <br>
-{{--                                                    <input type="hidden" name="ref" value="{{$data->ref}}">--}}
+{{--
+                                                    <input type="hidden" name="ref" value="{{$data->ref}}">
+--}}
                                                     <button type="submit" class="btn btn-success">Consulter les photos</button>
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer la fenetre</button>
 

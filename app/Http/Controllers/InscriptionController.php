@@ -29,6 +29,27 @@ class InscriptionController extends Controller
         return response()->json($datas);
     }
 
+    public function updateUserPassword(Request $request, $id)
+    {
+        $data = User::findOrFail($id);
+        $password = $request->password;
+        $confirm_password = $request->password_confirmation;
+      /*  $validatorPassword = Validator::make($request->all(),
+            [
+                'password'=>'confirmed'
+            ]);*/
+        if($password!=$confirm_password)
+        {
+            return response()->json('Les 2 mots de passe ne correspondent pas');
+        }
+        else
+        {
+            $data->password = Hash::make($request->password);
+            $data->save();
+            return response()->json($data);
+        }
+    }
+
     public function addUser(Request $request)
     {
         $name = $request->nom .' '.$request->prenoms;
@@ -548,6 +569,31 @@ class InscriptionController extends Controller
         $data = InformationIdenty::findOrFail($profil->id);
 
         return view('front.inscription.show', compact('data'));
+    }
+
+    public function showFormChangePassword()
+    {
+        $auth_id = Auth::user()->id;
+        return view('front.inscription.changepassword', compact('auth_id'));
+    }
+
+    public function changePassword(Request $request, $id)
+    {
+        $data = User::findOrFail($id);
+        $validatorPassword = Validator::make($request->all(),
+            [
+                'password'=>'confirmed'
+            ]);
+            if($validatorPassword->fails())
+            {
+            return back()->withInput()->with('error','Les 2 mots de passe ne correspondent pas');
+            }
+            else
+            {
+                $data->password = Hash::make($request->password);
+                $data->save();
+                return redirect()->route('profil.index')->with('success','Mot de passe modifié avec succès');
+            }
     }
 
     /**

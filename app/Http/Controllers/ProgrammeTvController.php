@@ -6,6 +6,7 @@ use App\CategorieProgrammeTv;
 use App\ProgrammeTv;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use FFMpeg\FFMpeg;
 
 class ProgrammeTvController extends Controller
 {
@@ -137,6 +138,15 @@ class ProgrammeTvController extends Controller
             $video = $request->file('link');
             $videoName= $video->getClientOriginalName();
             $video->move('assets/videos', $videoName);
+            $ffmpeg = FFMpeg::create();
+            //$video = $ffmpeg->open('assets/videos'.$videoName);
+            $duration = $ffmpeg
+                ->streams($video)
+                ->videos()
+                ->first()
+                ->get('duration');
+            dd($duration);
+
             ProgrammeTv::create(
                 [
                     'nom'=>$request->nom,
@@ -145,6 +155,7 @@ class ProgrammeTvController extends Controller
                     'date_tournage'=>$request->date_tournage,
                     'date_diffusion'=>$request->date_diffusion,
                     'description'=>$request->description,
+                    'duree'=>$duree
                 ]
             );
 

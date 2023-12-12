@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Abonnement;
 use App\CategorieProgrammeTv;
 use App\InformationIdenty;
+use App\ListeDiffusion;
 use App\PassTv;
 use App\PassType;
 use App\PassVisite;
@@ -14,6 +15,7 @@ use App\Transaction;
 use App\TypeAbonnement;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 
 class HomeController extends Controller
 {
@@ -34,7 +36,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $date = Date::now()->format('Y-m-d');
         $nbinscriptions = InformationIdenty::count('id');
+        $nblistediffusion = ListeDiffusion::count('id');
         $nbmaisons = Place::count('id');
         $nbprogrammes = ProgrammeTv::count('id');
         $nbtypeabonnements = TypeAbonnement::count('id');
@@ -49,6 +53,6 @@ class HomeController extends Controller
             compact('nbinscriptions','nbmaisons'
             ,'nbprogrammes','nbtypeabonnements','nbabonnements',
                 'nbpassvisites','nbpasstvs','nbtransactions',
-                'nbtypepass','nbusers','nbcategorieemissions'));
+                'nbtypepass','nbusers','nbcategorieemissions','nblistediffusion','date'));
     }
 }

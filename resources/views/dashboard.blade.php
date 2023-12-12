@@ -172,6 +172,19 @@
                               <a href="{{route('categorie_programme_tv.list')}}" class="small-box-footer">Afficher la liste<i class="fas fa-arrow-circle-right"></i></a>
                           </div>
                       </div>
+                      <div class="col-lg-3 col-6">
+                          <!-- small box -->
+                          <div class="small-box bg-primary">
+                              <div class="inner">
+                                  <h3>{{$nblistediffusion}}</h3>
+                                  <p>GESTION DES LISTE DE DIFFUSION</p>
+                              </div>
+                              <div class="icon">
+                                  <i class="fas fa-caravan"></i>
+                              </div>
+                              <a href="{{route('liste_diffusion.list',$date)}}" class="small-box-footer">Afficher la liste<i class="fas fa-arrow-circle-right"></i></a>
+                          </div>
+                      </div>
 
 
                   </div>
