@@ -15,7 +15,20 @@ class CreateEbankProfilsTable extends Migration
     {
         Schema::create('ebank_profils', function (Blueprint $table) {
             $table->id();
+            $table->string('nom')->nullable();
+            $table->string('prenoms')->nullable();
             $table->string('balance');
+            $table->string('photo')->nullable();
+            $table->string('email')->nullable();
+            $table->string('phone')->unique();
+            $table->boolean('is_staff')->nullable()->default(false);
+            $table->boolean('is_demarcheur')->nullable()->nullable()->default(false);
+            $table->boolean('is_suspended')->nullable()->default(false);
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->boolean('is_validated')->nullable()->default(false);
+            $table->boolean('has_epargne')->nullable()->default(false);
+
             $table->unsignedBigInteger('information_identity_id');
             $table->timestamps();
 

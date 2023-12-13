@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\CategorieProgrammeTv;
-use App\ProgrammeTv;
+use App\Models\CategorieProgrammeTv;
+use App\Models\ProgrammeTv;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use FFMpeg\FFMpeg;
@@ -155,7 +155,7 @@ class ProgrammeTvController extends Controller
                     'date_tournage'=>$request->date_tournage,
                     'date_diffusion'=>$request->date_diffusion,
                     'description'=>$request->description,
-                    'duree'=>$duree
+                    'duree'=>$duration
                 ]
             );
 

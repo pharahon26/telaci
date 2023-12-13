@@ -1,11 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TypeAbonnement extends Model
+class Commune extends Model
 {
     protected $guarded = [];
-
 }

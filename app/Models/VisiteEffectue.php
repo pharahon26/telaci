@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PassVisite extends Model
+class VisiteEffectue extends Model
 {
     protected $guarded = [];
 
@@ -22,7 +22,7 @@ class PassVisite extends Model
 
     public function places()
     {
-        return $this->belongsToMany('App\Place', 'visite_effectues');
+        return $this->belongsToMany('App\Models\Place', 'visite_effectues');
     }
 
     public function visiteEffectue()

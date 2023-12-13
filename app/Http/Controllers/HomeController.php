@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Abonnement;
-use App\CategorieProgrammeTv;
-use App\InformationIdenty;
-use App\ListeDiffusion;
-use App\PassTv;
-use App\PassType;
-use App\PassVisite;
-use App\Place;
-use App\ProgrammeTv;
-use App\Transaction;
-use App\TypeAbonnement;
-use App\User;
+use App\Models\Abonnement;
+use App\Models\CategorieProgrammeTv;
+use App\Models\InformationIdenty;
+use App\Models\ListeDiffusion;
+use App\Models\PassTv;
+use App\Models\PassType;
+use App\Models\PassVisite;
+use App\Models\Place;
+use App\Models\ProgrammeTv;
+use App\Models\Transaction;
+use App\Models\TypeAbonnement;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 

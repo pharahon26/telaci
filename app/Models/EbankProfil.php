@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,5 +13,14 @@ class EbankProfil extends Model
     public function informationIdentity()
     {
         return $this->belongsTo(InformationIdenty::class);
+    }
+    public function epargne()
+    {
+        return $this->hasOne(EpargneAccount::class);
+    }
+
+    public function transactions()
+    {
+        return $this->belongsToMany(Transaction::class, 'ebank_transactions');
     }
 }

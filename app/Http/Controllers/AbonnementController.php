@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Abonnement;
-use App\Place;
-use App\Transaction;
-use App\TypeAbonnement;
+use App\Models\Abonnement;
+use App\Models\Place;
+use App\Models\User;
+use App\Models\Transaction;
+use App\Models\TypeAbonnement;
 use CinetPay\CinetPay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,6 +67,8 @@ class AbonnementController extends Controller
             );
 
             $user_places = Place::where('user_id',$request->user_id)->get();
+            $user = User::where('user_id',$request->user_id)->get()->first();
+            $user->is_suspended = false;
             foreach ($user_places as $item)
             {
                 if($item->is_validated==false)

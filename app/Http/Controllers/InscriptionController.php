@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Abonnement;
-use App\EbankProfil;
-use App\InformationIdenty;
-use App\Place;
-use App\Transaction;
-use App\User;
+use App\Models\Abonnement;
+use App\Models\EbankProfil;
+use App\Models\InformationIdenty;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
 class InscriptionController extends Controller
@@ -29,125 +26,32 @@ class InscriptionController extends Controller
         return response()->json($datas);
     }
 
-    public function updateUserPassword(Request $request, $id)
-    {
-        $data = User::findOrFail($id);
-        $password = $request->password;
-        $confirm_password = $request->password_confirmation;
-      /*  $validatorPassword = Validator::make($request->all(),
-            [
-                'password'=>'confirmed'
-            ]);*/
-        if($password!=$confirm_password)
-        {
-            return response()->json('Les 2 mots de passe ne correspondent pas');
-        }
-        else
-        {
-            $data->password = Hash::make($request->password);
-            $data->save();
-            return response()->json($data);
-        }
-    }
-
     public function addUser(Request $request)
     {
-        $name = $request->nom .' '.$request->prenoms;
-        $is_demarcheur = $request->is_demarcheur;
-        if($is_demarcheur==true)
-        {
-            $is_demarcheur = 1;
-        }
-        else
-        {
-            $is_demarcheur = 0;
-        }
-
-        $photo=$request->photo;
-        if($photo!=null)
-        {
-            $imageName=$photo;
-            $photo = $this->savePicture($imageName, ('assets/img/users/photo/'.rand(1,9999999999999999).'.jpg'));
-        }
-
+        
         $checkUser = User::where('phone', $request->phone)->first();
         if($checkUser){
             return response()->json('Le numero de telephone saisit existe deja', 404);
         }
-        else
-        {
-            $data = User::create(
-                [
-                    'nom'=>$request->nom,
-                    'prenoms'=>$request->prenoms,
-                    'name'=>$name,
-                    'email'=>$request->email,
-                    'photo_profil'=>$photo,
-                    'phone'=>$request->phone,
-                    'created_at'=>now(),
-                    'is_demarcheur'=>$is_demarcheur,
-                    'password'=>Hash::make($request->password),
-                    'is_validated'=>false,
-                    'balance'=>0,
-                    'is_suspended'=>false,
-                ]
-            );
-
-            //on cree son profil
-            $identity = InformationIdenty::create(
-                [
-                    'name'=>$data->name,
-                    'photo'=>$photo,
-                    'phone1'=>$data->phone,
-                    'created_at'=>now(),
-                    'user_id'=>$data->id,
-                    'is_validated'=>0
-                ]);
-            //on crée en meme temps son compte e-banking
-            EbankProfil::create(
-                [
-                    'balance'=>0,
-                    'created_at'=>now(),
-                    'information_identity_id'=>$identity->id,
-                ]);
-
-
-            $dayAfter = (now())->format('Y-m-d');
-            $a = Abonnement::where('user_id', '=',$data->id)->where('end_date', '>', $dayAfter)->get();
-            $data['abonnement'] = $a;
-            $data['identity'] = $identity;
-            // $ab1 = $data->hasOne(Abonnement::class)->latestOfMany();
-
-            // $data['ab'] = $ab;
-            // $data['ab1'] = $ab1;
-            if($data)
-            {
-                return response()->json($data);
-            }
-            else
-            {
-                return response()->json('Une erreur est survenue');
-            }
-        }
-
-    }
-
-    public function addUserFromMobileApp(Request $request)
-    {
         $name = $request->nom .' '.$request->prenoms;
         $is_demarcheur = $request->is_demarcheur;
+
+        
         $photo=$request->photo;
+
         if($photo!=null)
         {
             $imageName=$photo;
-            $photo = $this->savePicture($imageName, ('assets/img/users/photo/'.rand(1,9999999999999999).'.jpg'));
+            $photo = $this->savePicture($imageName, ('assets/img/users/pieces/'.rand(1,9999999999999999).'.jpg'));
         }
 
-        $data = User::create(
+
+        $profil = User::create(
             [
                 'nom'=>$request->nom,
                 'prenoms'=>$request->prenoms,
                 'name'=>$name,
+                'photo_profil'=>$photo,
                 'email'=>$request->email,
                 'phone'=>$request->phone,
                 'created_at'=>now(),
@@ -160,34 +64,42 @@ class InscriptionController extends Controller
         );
 
         //on cree son profil
-        InformationIdenty::create(
+        $identity = InformationIdenty::create(
             [
-                'name'=>$data->name,
+                'name'=>$profil->name,
                 'photo'=>$photo,
-                'phone1'=>$data->phone,
+                // 'photo'=>$photoName,
+                'phone1'=>$profil->phone,
                 'created_at'=>now(),
-                'user_id'=>$data->id,
+                'user_id'=>$profil->id,
                 'is_validated'=>0
             ]);
-        //on crée en meme temps son compte e-banking
-        EbankProfil::create(
+        // //on crée en meme temps son compte e-banking
+        $ebank = EbankProfil::create(
             [
+                'nom'=>$request->nom,
+                'prenoms'=>$request->prenoms,
                 'balance'=>0,
+                'photo'=>$photo,
+                'email'=>$request->email,
+                'phone'=>$request->phone,
+                'is_demarcheur'=>true,
+                'password'=>Hash::make($request->password),
                 'created_at'=>now(),
-                'information_identity_id'=>$data->id,
+                'information_identity_id'=>$identity->id,
             ]);
 
 
-        $dayAfter = (now())->format('Y-m-d');
-        $a = Abonnement::where('user_id', '=',$data->id)->where('end_date', '>', $dayAfter)->get();
-        $data['abonnement'] = $a;
-
-        // $ab1 = $data->hasOne(Abonnement::class)->latestOfMany();
-
-        // $data['ab'] = $ab;
-        // $data['ab1'] = $ab1;
-
-        return response()->json($data);
+        if($profil)
+        {
+            $data['profil'] = $profil;
+            $data['ebank'] = $ebank;
+            return response()->json($data);
+        }
+        else
+        {
+            return response()->json('Une erreur est survenue');
+        }
     }
 
     public function showUser($id)
@@ -196,73 +108,26 @@ class InscriptionController extends Controller
         return response()->json($data);
     }
 
-    /*    public function updateUser(Request $request, $id)
-        {
-            $data = User::findOrFail($id);
-            $data->nom = $request->nom;
-            $data->prenoms = $request->prenoms;
-            $data->name = $request->nom . ' '. $request->prenoms;
-            $data->email = $request->email;
-            $data->phone = $request->phone;
-            $data->is_staff = $request->is_staff;
-            $data->is_demarcheur = $request->is_demarcheur;
-            $data->is_suspended = $request->is_suspended;
-            $data->is_validated = $request->is_validated;
-            $data->password = Hash::make($request->password);
-            $data->remember_password = $request->password;
-            $data->updated_at = now();
-            $data->save();
-            return response()->json($data);
-        }*/
-
-    public function updateUserProfil(Request $request)
+/*    public function updateUser(Request $request, $id)
     {
-        $cni_recto=$request->cni_recto;
-        $cni_verso=$request->cni_verso;
-        $photo=$request->photo;
-
-        if($cni_recto!=null)
-        {
-            $imageName=$cni_recto;
-            $cni_recto = $this->savePicture($imageName, ('assets/img/users/pieces/'.rand(1,9999999999999999).'.jpg'));
-        }
-        if($cni_verso!=null)
-        {
-            $imageName=$cni_verso;
-            $cni_verso = $this->savePicture($imageName, ('assets/img/users/pieces/'.rand(1,9999999999999999).'.jpg'));
-        }
-
-
-        $id = $request->id;
-
-        $dataInfo = InformationIdenty::where('user_id',$id)->first();
-        $data = InformationIdenty::findOrFail($dataInfo->id);
-        $data->name = $request->name;
-        $data->genre = $request->genre;
-        $data->phone1 = $request->phone1;
-        $data->phone2 = $request->phone2;
-        $data->lieu_naissance = $request->lieu_naissance;
-        $data->date_naissance = $request->date_naissance;
-        $data->nationalite = $request->nationalite;
-        //$data->pays = $request->pays;
-        $data->domicile = $request->domicile;
-        $data->cni_recto = $cni_recto;
-        $data->cni_verso = $cni_verso;
-        $data->numero_cni = $request->numero_cni;
+        $data = User::findOrFail($id);
+        $data->nom = $request->nom;
+        $data->prenoms = $request->prenoms;
+        $data->name = $request->nom . ' '. $request->prenoms;
+        $data->email = $request->email;
+        $data->phone = $request->phone;
+        $data->is_staff = $request->is_staff;
+        $data->is_demarcheur = $request->is_demarcheur;
+        $data->is_suspended = $request->is_suspended;
+        $data->is_validated = $request->is_validated;
+        $data->password = Hash::make($request->password);
+        $data->remember_password = $request->password;
         $data->updated_at = now();
         $data->save();
-
-        //on update les datas dans la table user
-        $dataUser = User::findOrFail($id);
-        $dataUser->name = $request->name;
-        $dataUser->phone = $request->phone1;
-        $dataUser->is_completed = 1;
-        $dataUser->save();
-
         return response()->json($data);
-    }
+    }*/
 
-    public function updateUserProfilBackup(Request $request)
+    public function updateUserProfil(Request $request)
     {
         $cni_recto=$request->cni_recto;
         $cni_verso=$request->cni_verso;
@@ -304,6 +169,9 @@ class InscriptionController extends Controller
         /*$cni_recto=$request->cni_recto;
         $cni_verso=$request->cni_verso;
         $photo=$request->photo;
+        // $cni_recto=$request->cni_recto;
+        // $cni_verso=$request->cni_verso;
+        // $photo=$request->photo;
 
         if($cni_recto!=null)
         {
@@ -323,6 +191,26 @@ class InscriptionController extends Controller
         $id = $request->id;
         $data = InformationIdenty::where('user_id', '=',$id)->first();
 
+        // if($cni_recto!=null)
+        // {
+        //     $imageName=$cni_recto;
+        //     $cni_recto = $this->savePicture($imageName, ('assets/img/users/pieces/'.rand(1,9999999999999999).'.jpg'));
+        // }
+        // if($cni_verso!=null)
+        // {
+        //     $imageName=$cni_verso;
+        //     $cni_verso = $this->savePicture($imageName, ('assets/img/users/pieces/'.rand(1,9999999999999999).'.jpg'));
+        // }
+        // if($photo!=null)
+        // {
+        //     $imageName=$photo;
+        //     $photo = $this->savePicture($imageName, ('assets/img/users/photo/'.rand(1,9999999999999999).'.jpg'));
+        // }
+        // $id = 1;
+        $id = $request->id;
+        // $data = InformationIdenty::findOrFail($id);
+        
+        $data = InformationIdenty::where('user_id', '=',$id)->first();
         $data->name = $request->name;
         $data->genre = $request->genre;
         $data->phone1 = $request->phone1;
@@ -335,6 +223,9 @@ class InscriptionController extends Controller
         /*$data->cni_recto = $cni_recto;
         $data->cni_verso = $cni_verso;
         $data->photo = $photo;*/
+        // $data->cni_recto = $cni_recto;
+        // $data->cni_verso = $cni_verso;
+        // $data->photo = $photo;
         $data->updated_at = now();
         $data->save();
         return response()->json($data);
@@ -370,11 +261,8 @@ class InscriptionController extends Controller
         return view('front.inscription.create_identification');
     }
 
-    public function login(Request $request)
+    public function login()
     {
-        // Récupère la valeur du cookie
-        //$cookie = $request->cookie('phone_number');
-        //dd($cookie);
         return view('front.inscription.login');
     }
 
@@ -398,6 +286,7 @@ class InscriptionController extends Controller
                 {
                     $dayAfter = (now())->format('Y-m-d');
                     $data = Abonnement::where('user_id', '=',$checkUser->id)->where('end_date', '>', $dayAfter)->get();
+
                     return redirect()->route('profil.index', compact('data'));
                 }
                 else
@@ -435,19 +324,15 @@ class InscriptionController extends Controller
 
     public function updateProfil(Request $request, $id)
     {
-        $id = Auth::user()->id;
-        //dd($id);
         $cni_recto=$request->file('cni_recto');
-        $cniRectoName=uniqid().'.'. $cni_recto->extension();
-        $cni_recto = $cni_recto->move('assets/img/users/pieces', $cniRectoName);
+        $cniRectoName=time().'.'. $cni_recto->extension();
+        $cni_recto->move('assets/imag/users/pieces', $cniRectoName);
 
         $cni_verso=$request->file('cni_verso');
-        $cniVersoName=uniqid().'.'. $cni_verso->extension();
-        $cni_verso = $cni_verso->move('assets/img/users/pieces', $cniVersoName);
+        $cniVersoName=time().'.'. $cni_verso->extension();
+        $cni_verso->move('assets/imag/users/pieces', $cniVersoName);
         //on update les info dans la table informationIdentity
-        $dataInfo = InformationIdenty::where('user_id',$id)->first();
-        $data = InformationIdenty::findOrFail($dataInfo->id);
-        //dd($data);
+        $data = InformationIdenty::findOrFail($id);
         $data->name = $request->name;
         $data->genre = $request->genre;
         $data->phone1 = $request->phone;
@@ -457,8 +342,8 @@ class InscriptionController extends Controller
         $data->nationalite = $request->nationalite;
         //$data->pays = $request->pays;
         $data->domicile = $request->domicile;
-        $data->cni_recto = $cni_recto;
-        $data->cni_verso = $cni_verso;
+        $data->cni_recto = $cniRectoName;
+        $data->cni_verso = $cniVersoName;
         $data->numero_cni = $request->numero_cni;
         $data->updated_at = now();
         $data->save();
@@ -482,18 +367,12 @@ class InscriptionController extends Controller
     {
         $chechPhoneNumber = Validator::make($request->all(),
             [
-                'phone1'=>'unique:information_identies'
+                'phone'=>'unique:users'
             ]);
         $validatorPassword = Validator::make($request->all(),
             [
                 'password'=>'confirmed'
             ]);
-
-
-        if($request->accepter!='on')
-        {
-            return back()->withInput()->with('error','Veuillez accepter nos conditions d\'utilisation');
-        }
         if($chechPhoneNumber->fails())
         {
             return back()->withInput()->with('error','Cet numero de télephone appartient dèja
@@ -507,14 +386,14 @@ class InscriptionController extends Controller
         {
             $photo=$request->photo;
             $photoName=time().'.'. $photo->extension();
-            $photo = $photo->move('assets/img/users/photo', $photoName);
+            $photo->move('assets/img/users/photo', $photoName);
             $data = User::create(
                 [
                     'name'=>$request->name,
-                    'photo_profil'=>$photo,
+                    //'email'=>$request->email,
                     'phone'=>$request->phone,
                     'created_at'=>now(),
-                    'is_demarcheur'=>1,
+                    'is_demarcheur'=>$request->is_demarcheur,
                     'password'=>Hash::make($request->password),
                     'is_validated'=>false,
                     'balance'=>0,
@@ -526,7 +405,7 @@ class InscriptionController extends Controller
             $identity = InformationIdenty::create(
                 [
                     'name'=>$data->name,
-                    'photo'=>$photo,
+                    'photo'=>$photoName,
                     'phone1'=>$data->phone,
                     'created_at'=>now(),
                     'user_id'=>$data->id,
@@ -539,12 +418,8 @@ class InscriptionController extends Controller
                     'created_at'=>now(),
                     'information_identity_id'=>$identity->id,
                 ]);
-            //on enregistre dans les cookies
-            $cookie = cookie('phone_number', $request->phone, 2);
-            //dd($cookie);
             //redirection
-            return redirect()->route('login.index')->with('success',
-                'Votre profil a été crée avec succès, veuillez vous connecter maintenant')->cookie($cookie);
+            return redirect()->back()->with('success','Votre profil a été crée avec succès, veuillez vous connecter maintenant');
 
         }
 
@@ -560,40 +435,6 @@ class InscriptionController extends Controller
     {
         $data = InformationIdenty::findOrFail($id);
         return view('admin.inscription.show', compact('data'));
-    }
-
-    public function showProfil($id)
-    {
-        $auth = Auth::user()->id;
-        $profil = InformationIdenty::where('user_id',$auth)->first();
-        $data = InformationIdenty::findOrFail($profil->id);
-
-        return view('front.inscription.show', compact('data'));
-    }
-
-    public function showFormChangePassword()
-    {
-        $auth_id = Auth::user()->id;
-        return view('front.inscription.changepassword', compact('auth_id'));
-    }
-
-    public function changePassword(Request $request, $id)
-    {
-        $data = User::findOrFail($id);
-        $validatorPassword = Validator::make($request->all(),
-            [
-                'password'=>'confirmed'
-            ]);
-            if($validatorPassword->fails())
-            {
-            return back()->withInput()->with('error','Les 2 mots de passe ne correspondent pas');
-            }
-            else
-            {
-                $data->password = Hash::make($request->password);
-                $data->save();
-                return redirect()->route('profil.index')->with('success','Mot de passe modifié avec succès');
-            }
     }
 
     /**
@@ -624,116 +465,10 @@ class InscriptionController extends Controller
         //on update en meme temps les info dans la table user
         $data_user->is_validated = 1;
         $data_user->save();
-        $user_places = Place::where('user_id',$data->user_id)->get();
-        foreach ($user_places as $item)
-        {
-            if($item->is_validated==false)
-            {
-                $item->is_validated =true;
-                $item->save();
-            }
-        }
 
-        /*$token = $this->getLoginToken();
-        $this->addNumber($data->phone1,225,$token,'', $data->name);*/
-        return redirect()->back()->with('success','Inscription validée avec succès');
-    }
-
-    public function validateInscriptionWithAbonnemnt(Request $request, $id)
-    {
-        $data = InformationIdenty::findOrFail($id);
-        //on recupere les info dans la table users
-        $data_user = User::findOrFail($data->user_id);
-        $data->is_validated = 1;
-        $data->save();
-        //on update en meme temps les info dans la table user
-        $data_user->is_validated = 1;
-        $data_user->save();
-        //on enregistre son abonnement pour 1 mois
-        //on save la transaction
-        $transaction = Transaction::create(
-            [
-                'transaction_number'=>'Promo',
-                'date_transaction'=>now(),
-                'amount'=>0,
-                'transaction_way'=>'Tela',
-                'transaction_type'=>'Tela Promo',
-                'operation_id'=>'Tela',
-                'created_at'=>now(),
-            ]
-        );
-        //on enregistre labonnement
-        $uniqid = uniqid();
-        $abonnement = Abonnement::create(
-            [
-                'type'=>'Promo',
-                'type_abonnement_id'=>1,
-                'start_date'=>now(),
-                'end_date'=>date('Y-m-d', strtotime(' + 1 month')),
-                'transaction_id'=>1,
-                'created_at'=>now(),
-                'user_id'=>$data->user_id,
-                'is_actif'=>1
-            ]
-        );
-        $user_places = Place::where('user_id',$data->user_id)->get();
-        foreach ($user_places as $item)
-        {
-            if($item->is_validated==false)
-            {
-                $item->is_validated =true;
-                $item->save();
-            }
-        }
-
-        /*$token = $this->getLoginToken();
-        $this->addNumber($data->phone1,225,$token,'', $data->name);*/
+        /// ajouter le contact à la liste des contatcts CINETPAY
 
         return redirect()->back()->with('success','Inscription validée avec succès');
-    }
-
-    public function getLoginToken()
-    {
-        /// fonction pour vérifier si le payement a bien été effectué au niveau de cinetpay
-
-        $response = Http::asForm()->post('https://client.cinetpay.com/v1/auth/login',[
-            'apikey ' => '412126359654bb6ed651509.14435556',
-            'password ' => '5865665',
-        ]);
-
-        $jsonData = $response->json();
-
-        /// on verifier que le payement est réussi et la some est bonne
-        if ($jsonData->code == '0') {
-            return $jsonData->data->token;
-        } else {
-            return '';
-        }
-
-    }
-
-    // ajouter numero 0 la liste de contacts CINET_PAY
-    public function addNumber($phone, $prefix='225', $token, $mail='', $name)
-    {
-        /// fonction pour vérifier si le payement a bien été effectué au niveau de cinetpay
-
-        $response = Http::withToken($token)->post('https://client.cinetpay.com/v1/transfer/contact',[
-            "prefix"=> $prefix,
-            "phone" => $phone,
-            "name" => $name,
-            "surname" => $name,
-            "email" => $mail
-        ] );
-
-        $jsonData = $response->json();
-
-        /// on verifier que le payement est réussi et la some est bonne
-        if ($jsonData->code == '0') {
-            return true;
-        } else {
-            return false;
-        }
-
     }
 
     /**

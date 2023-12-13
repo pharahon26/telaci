@@ -1,6 +1,8 @@
 <?php
 
-use App\Demarcheur;
+
+namespace Database\Seeders;
+
 use App\EbankProfil;
 use App\InformationIdenty;
 use App\User;

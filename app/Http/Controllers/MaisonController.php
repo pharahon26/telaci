@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Commune;
-use App\Image;
-use App\PassVisite;
-use App\Place;
-use App\VisiteEffectue;
+use App\Models\Commune;
+use App\Models\Image;
+use App\Models\PassVisite;
+use App\Models\Place;
+use App\Models\VisiteEffectue;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -54,9 +54,8 @@ class MaisonController extends Controller
                     ->orWhere('has_COUR_AVANT',$request->has_COUR_AVANT)
                     ->orWhere('has_COUR_ARRIERE',$request->has_COUR_ARRIERE);
                     ;
-            })
-            ->paginate(50)
-            ->with('image')
+            })->inRandomOrder()
+            ->limit(200)
             ->get();
         return response()->json($datas);
     }
@@ -85,9 +84,8 @@ class MaisonController extends Controller
                     ->orWhere('has_balcon_arriere', $request->has_balcon_arriere)
                 ->orWhere('has_COUR_AVANT',$request->has_COUR_AVANT)
                     ->orWhere('has_COUR_ARRIERE',$request->has_COUR_ARRIERE);
-            })
-            ->paginate(50)
-            ->with('image')
+            })->inRandomOrder()
+            ->limit(200)
             ->get();
         return response()->json($datas);
     }

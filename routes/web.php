@@ -72,12 +72,13 @@ Route::group(['prefix' => 'api'], function (){
     Route::group(['prefix'=>'places'], function()
     {
         Route::get('/', 'ApiController@getAllPlaces');
-        Route::post('/searchplace', 'ApiController@searchPlace');
-        Route::post('/searchbureau', 'ApiController@searchBureau');
+        Route::post('/searchplace', 'MaisonController@searchPlace');
+        Route::post('/searchbureau', 'MaisonController@searchBureau');
         Route::post('/create', 'ApiController@addPlace');
         Route::get('{id}/show', 'ApiController@showPlace');
         Route::post('{id}/update', 'ApiController@updatePlace');
         Route::get('{id}/delete', 'ApiController@deletePlace');
+        Route::get('{id}/my_places', 'MaisonController@getMyPlaces');
     });
 
     //gestion des abonnements
@@ -108,6 +109,15 @@ Route::group(['prefix' => 'api'], function (){
     {
         Route::get('/', 'EbankingController@getAllEbankingProfils');
         Route::post('/create', 'EbankingController@addEbankingProfil');
+        Route::post('/login', 'EbankingController@login');
+        Route::post('/create_epargne', 'EbankingController@createEpargneAccount');
+        Route::post('/ebank_transactions', 'EbankingController@getAllEbankTransactions');
+        Route::post('/epargne_transactions', 'EbankingController@getAllEpargneTransactions');
+        Route::post('/depot', 'EbankingController@depot');
+        Route::post('/retrait', 'EbankingController@retrait');
+        Route::post('/epargner', 'EbankingController@epargner');
+        Route::post('/epargne_inverse', 'EbankingController@epargneInverse');
+        Route::post('/buy_abonement_ebank', 'EbankingController@buyAbonementFromEbank');
         Route::get('{id}/show', 'EbankingController@showEbankingProfil');
         Route::post('{id}/update', 'EbankingController@updateEbankingProfil');
     });
@@ -154,9 +164,11 @@ Route::group(['prefix' => 'api'], function (){
     Route::group(['prefix'=>'pass-visite'], function()
     {
         Route::get('/', 'PassVisiteController@getAllPassVisites');
-        Route::post('/buy_pass_visite', 'ApiController@buyPassVisite');
+        Route::post('/buy_pass_visite', 'PassVisiteController@buyPassVisite');
         Route::post('/verif', 'PassVisiteController@verifPassVisite');
         Route::post('/one_visite', 'PassVisiteController@passM');
+        Route::post('/prolonge_pass_visite', 'PassVisiteController@prolongePassVisite');
+        Route::post('/get_pass_visite', 'PassVisiteController@getPassVisitePlaces');
     });
 
     Route::group(['prefix'=>'pass-tv'], function()

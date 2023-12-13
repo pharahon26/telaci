@@ -1,10 +1,9 @@
 <?php
 
-namespace App;
-
+namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
-class Commune extends Model
+class PassType extends Model
 {
     protected $guarded = [];
 }

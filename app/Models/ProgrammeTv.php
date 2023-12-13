@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,8 +15,8 @@ class ProgrammeTv extends Model
         return $this->belongsTo(CategorieProgrammeTv::class);
     }
 
-    public function listeDiffusion()
-    {
-        return $this->hasMany(ListeDiffusion::class);
-    }
+    // public function listeDiffusion()
+    // {
+    //     return $this->hasMany(ListeDiffusion::class);
+    // }
 }

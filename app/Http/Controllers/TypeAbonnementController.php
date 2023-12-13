@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\TypeAbonnement;
+use App\Models\TypeAbonnement;
 use Illuminate\Http\Request;
 
 class TypeAbonnementController extends Controller

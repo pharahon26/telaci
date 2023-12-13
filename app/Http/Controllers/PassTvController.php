@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\PassTv;
-use App\PassType;
-use App\Transaction;
+use App\Models\PassTv;
+use App\Models\PassType;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class PassTvController extends Controller

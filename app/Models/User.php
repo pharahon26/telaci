@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -38,7 +38,7 @@ class User extends Authenticatable
 
     public function bankProfile()
     {
-        return $this->hasOne('App\EbankProfil');
+        return $this->hasOne('App\Models\EbankProfil');
     }
 
     public function place()

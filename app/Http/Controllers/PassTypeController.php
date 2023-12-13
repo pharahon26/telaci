@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\PassType;
+use App\Models\PassType;
 use Illuminate\Http\Request;
 
 class PassTypeController extends Controller

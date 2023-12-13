@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\CategorieProgrammeTv;
-use App\ProgrammeTv;
+use App\Models\CategorieProgrammeTv;
+use App\Models\ProgrammeTv;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 

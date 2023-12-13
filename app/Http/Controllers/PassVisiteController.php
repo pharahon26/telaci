@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Abonnement;
-use App\PassType;
-use App\PassVisite;
-use App\Place;
-use App\Transaction;
-use App\TypeAbonnement;
-use App\User;
-use App\VisiteEffectue;
+use App\Models\Abonnement;
+use App\Models\PassType;
+use App\Models\PassVisite;
+use App\Models\Place;
+use App\Models\Transaction;
+use App\Models\TypeAbonnement;
+use App\Models\User;
+use App\Models\VisiteEffectue;
 use Illuminate\Http\Request;
 
 class PassVisiteController extends Controller
@@ -24,7 +24,7 @@ class PassVisiteController extends Controller
     //GESTION DES PASS DE VISITE
     public function getAllPassVisites()
     {
-        $datas = PassVisite::with('user','passType','transactionData')->get();
+        $datas = PassVisite::with('passType','transaction')->get();
         return response()->json($datas);
     }
 
@@ -118,7 +118,7 @@ class PassVisiteController extends Controller
             //on recupere le type de passe
             $data_type_pass = PassType::findOrFail($request->pass_type_id);
 
-            $passvisite = PassVisite::with('passType','transactionData')
+            $passvisite = PassVisite::with('passType','transaction')
                 ->where('code',$code)->first();
             /*$passvisite->nb_visite = $data_type_pass->nb_visite;
             $passvisite->transaction_number = $request->transaction_number;
@@ -155,9 +155,11 @@ class PassVisiteController extends Controller
 
         // récupère le pass visite avec les maisons visité aux quelles il est lié dans la table "visites effectué"
         $data = PassVisite::where('code',$code)->first();
-
-        // $checkData = VisiteEffectue::where('pass_visite_id',$data->id)
-        //     ->where('place_id',$placeId)->first();
+        $place = Place::where('id',$placeId)->first();
+        $demarcheur = User::where('id',$place->user_id)->first();
+        $type_visite = PassType::where('id',$data->pass_type_id)->first();
+        $abonnement = Abonnement::where('user_id',$place->user_id)
+        ->where('end_date', '>=', now())->first();
 
         if($data->is_expired){
             return response()->json($data);
@@ -168,28 +170,45 @@ class PassVisiteController extends Controller
             return response()->json($data);
         }
 
+
+        $checkData = VisiteEffectue::where('pass_visite_id',$data->id)
+            ->where('place_id',$placeId)->first();
+
         // si l'id de la maison est dans la liste ne rien faire
-        // if($checkData ==null)
-        if(true)
-        {
+        if($checkData ==null)
+        {   
             //  décrémenter le nombre de visites du pass et lier le pass a la maison dans la table visites effectué
             $data->nb_visite = $data->nb_visite -1;
             if($data->nb_visite==0)
             {
-                $data->is_expired = True;
+                $data->is_expired = 1;
             }
             else
             {
-                $data->is_expired = False;
+                $data->is_expired = 0;
             }
             $data->save();
             //on enregistre les datas dans la table VisiteEffectue
-            // VisiteEffectue::create(
-            //     [
-            //         'pass_visite_id'=>$data->id,
-            //         'place_id'=>$placeId,
-            //     ]
-            // );
+            VisiteEffectue::create(
+                [
+                    'pass_visite_id'=>$data->id,
+                    'place_id'=>$placeId,
+                ]
+            );
+
+            if ($abonnement != null) {
+                
+                $type = TypeAbonnement::where('id',$abonnement->type_abonnement_id)->first();
+                // calculate user part
+                $p = (int)$type_visite->price;
+                $visitePrice = $p / $type_visite->nb_visite;
+                $dem_part = ($visitePrice/100) * $type->pourcentage_demarcheur;
+
+                // update user data and save
+                $demarcheur->balance += $dem_part;
+                $demarcheur->save();
+            }
+
         }
 
         return response()->json($data);
@@ -199,7 +218,7 @@ class PassVisiteController extends Controller
     public function verifPassVisite(Request $request)
     {
         $code = $request->code;
-        $data = PassVisite::with('passType','transactionData')
+        $data = PassVisite::with('passType','transaction')
             ->where('code',$code)->first();
         return response()->json($data);
     }
@@ -244,7 +263,7 @@ class PassVisiteController extends Controller
 
     public function showPassVisite($id)
     {
-        $data = PassVisite::with('passType','transactionData')->findOrFail($id);
+        $data = PassVisite::with('passType','transaction')->findOrFail($id);
         return response()->json($data);
     }
 
