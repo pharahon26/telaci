@@ -7,7 +7,7 @@
     <form method="post" action="{{route('catalogue.store')}}" enctype="multipart/form-data">
         @csrf
         <!-- Champs pour latitude -->
-        <div class="form-group">
+        <div class="form-group ">
             <label for="latitude" class="perso">Commune:</label>
             <select name="commune_id" required class="form-control" id="">
                 @foreach($communes as $item)
@@ -15,17 +15,6 @@
                 @endforeach
             </select>
         </div>
-<!--
-        <div class="form-group">
-            <label for="latitude">Latitude:</label>
-            <input type="text" name="latitude" class="form-control" >
-        </div>
-
-        &lt;!&ndash; Champs pour longitude &ndash;&gt;
-        <div class="form-group">
-            <label for="longitude">Longitude:</label>
-            <input type="text" name="longitude" class="form-control" >
-        </div>-->
 
         <!-- Champs pour prix -->
         <div class="form-group">

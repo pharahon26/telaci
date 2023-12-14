@@ -10,6 +10,7 @@ use App\Models\EpargneTransaction;
 use App\Models\InformationIdenty;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 
@@ -31,7 +32,7 @@ class EbankingController extends Controller
 
     public function addEbankingProfil(Request $request)
     {
-        
+
         $checkUser = InformationIdenty::where('phone1', $request->phone)->first();
         if($checkUser){
             return response()->json('Le numero de telephone saisit existe deja', 404);
@@ -56,7 +57,7 @@ class EbankingController extends Controller
                 'is_validated'=>0
             ]);
         // //on crée en meme temps son compte e-banking
-            
+
         $profil = EbankProfil::create(
             [
                 'nom'=>$request->nom,
@@ -83,7 +84,7 @@ class EbankingController extends Controller
         }
     }
 
-    
+
     //AUTHENTIFICATION
     public function login(Request $request){
 
@@ -114,9 +115,9 @@ class EbankingController extends Controller
                 }
                 else
                 {
-                    return response()->json($data, 200);      
-                }          
-            
+                    return response()->json($data, 200);
+                }
+
             }
         }
 
@@ -129,10 +130,10 @@ class EbankingController extends Controller
 
     }
 
-    
+
     public function createEpargneAccount(Request $request)
     {
-        
+
         $profil = EbankProfil::where('phone', $request->phone)->first();
 
 
@@ -157,8 +158,8 @@ class EbankingController extends Controller
             return response()->json('Une erreur est survenue', 404);
         }
     }
-    
-    
+
+
     public function getAllEbankTransactions(Request $request)
     {
         $phone = $request->phone;
@@ -175,9 +176,9 @@ class EbankingController extends Controller
         //     return response()->json('Erreur innatendue');
         // }
     }
-    
-    
-    
+
+
+
     public function getAllEpargneTransactions(Request $request)
     {
         $phone = $request->phone;
@@ -198,14 +199,14 @@ class EbankingController extends Controller
         // }
     }
 
-    
+
     public function depot(Request $request)
     {
 
         // vérification au près de cinetpay de la transaction
         $isPayed = true;
         // $isPayed = $this->checkStatutTransactions($request->transaction_number, $request->amount);
-        
+
         $profil = EbankProfil::where('phone', $request->phone)->first();
         // si la transaction est validé, créer la transaction et le pass
         if($isPayed){
@@ -249,7 +250,7 @@ class EbankingController extends Controller
         //return response()->json($isPayed);
 
     }
-    
+
     public function retrait(Request $request)
     {
         $amount = $request->amount;
@@ -293,7 +294,7 @@ class EbankingController extends Controller
                         'created_at'=>now(),
                     ]
                 );
-                    
+
                 $data['transaction'] = $transaction;
 
                 // update account
@@ -314,7 +315,7 @@ class EbankingController extends Controller
                     $data['profil'] = $epargne;
                     $data['ebank_transaction'] = $link;
                 } else {
-                    
+
                     $link = EbankTransaction::create(
                         [
                             'ebank_profil_id'=>$profil->id,
@@ -329,11 +330,11 @@ class EbankingController extends Controller
                     $data['ebank_transaction'] = $link;
                 }
                 return response()->json($data);
-                
+
             }else{
                 return response()->json('Erreur Innatendu', 404);
             }
-            
+
         }else{
             return response()->json('Erreur Innatendu', 404);
         }
@@ -341,7 +342,7 @@ class EbankingController extends Controller
 
 
     }
-    
+
     public function epargner(Request $request)
     {
         // recupérer le montant epargné
@@ -409,7 +410,7 @@ class EbankingController extends Controller
             $data['epargne'] = $epargne;
             return response()->json($data);
 
-            
+
         }else{
             return response()->json('Une erreur est survenue', 404);
         }
@@ -485,7 +486,7 @@ class EbankingController extends Controller
             $data['epargne'] = $epargne;
             return response()->json($data);
 
-            
+
         }else{
             return response()->json('Une erreur est survenue', 404);
         }
@@ -494,7 +495,7 @@ class EbankingController extends Controller
 
     }
 
-    
+
     public function buyAbonementFromEbank(Request $request)
     {
         // recupère les données pour la transaction (transaction_number, amount, transaction_way, transaction_type, operation_id ) et le type de pass depuis l'utilisateur
@@ -504,7 +505,7 @@ class EbankingController extends Controller
         // $isPayed = $this->checkStatutTransactions($request->transaction_number, $request->amount);
 
         // si la transaction est validé, créer la transaction et l'abonnement
-        
+
         $profil = EbankProfil::where('phone', $request->phone)->first();
         $canPay = $profil->balance >= ($request->amount + 5000);
         if($canPay){
@@ -524,7 +525,7 @@ class EbankingController extends Controller
             //on enregistre l'abonnement
             $uniqid = uniqid();
             //on save l'abonnement
-            
+
             $dayAfter = (now())->format('Y-m-d');
             $oldAbonnement = Abonnement::where('user_id', '=',$request->user_id)->where('end_date', '>', $dayAfter)->sortByDate('end_date')->first();
             $sd = now();
@@ -580,7 +581,17 @@ class EbankingController extends Controller
 
     public function index()
     {
-        //
+        if(Auth::check())
+        {
+            $auth = Auth::user()->id;
+            $information = InformationIdenty::where('user_id',$auth)->first();
+            $datas = EbankProfil::where('information_identity_id',$information->id)->first();
+            return view('front.finance.index',compact('datas'));
+        }
+        else
+        {
+            return view('front.finance.index');
+        }
     }
 
     /**
@@ -649,7 +660,7 @@ class EbankingController extends Controller
         //
     }
 
-    
+
     public function checkStatutTransactions($cpm_trans_id, $amount)
     {
         /// fonction pour vérifier si le payement a bien été effectué au niveau de cinetpay
@@ -671,7 +682,7 @@ class EbankingController extends Controller
 
     }
 
-    
+
     public function getLoginToken()
     {
         /// fonction pour vérifier si le payement a bien été effectué au niveau de cinetpay
@@ -692,7 +703,7 @@ class EbankingController extends Controller
 
     }
 
-    
+
     public function checkBalance($amount, $token)
     {
         /// fonction pour vérifier si le payement a bien été effectué au niveau de cinetpay
@@ -709,7 +720,7 @@ class EbankingController extends Controller
         }
 
     }
-    
+
 
     // ajouter numero 0 la liste de contacts CINET_PAY
     public function addNumber($phone, $prefix='225', $token, $mail='', $name)
@@ -735,7 +746,7 @@ class EbankingController extends Controller
 
     }
 
-    
+
     public function processRetrait($phone, $prefix='225', $token, $mail='', $amount, $transaction_number)
     {
         /// fonction pour vérifier si le payement a bien été effectué au niveau de cinetpay
@@ -746,7 +757,7 @@ class EbankingController extends Controller
                     "amount" => $amount,
                     "client_transaction_id" => $transaction_number,
                     "notify_url" => "http://yourdomain.com/transfer/notify",
-                    // "payment_method" => "WAVECI" 
+                    // "payment_method" => "WAVECI"
                 ]);
 
         $jsonData = $response->json();
@@ -769,7 +780,7 @@ class EbankingController extends Controller
         return $transaction_number;
 
     }
-    
+
     private function savePicture($base64_string, $output_file) {
         $dirPlace = 'assets/img/places/';
         $dirPhoto = 'assets/img/users/photo/';
@@ -801,6 +812,6 @@ class EbankingController extends Controller
         return $output_file;
     }
 
-    
+
 
 }

@@ -18,13 +18,13 @@
 
             </div>
             <div class="col-xl-3 col-md-3 col-lg-3 col-sm-12">
-                <img src="{{asset('assets/img/users/photo')}}/{{$data->photo}}" width="250px" height="250px" alt="">
+                <img src="{{asset($data->photo)}}" width="250px" height="250px" alt="">
             </div>
             <div class="col-xl-3 col-md-3 col-lg-3 col-sm-12">
-                <img src="{{asset('assets/img/users/pieces')}}/{{$data->cni_recto}}" width="250px" height="250px" alt="">
+                <img src="{{asset($data->cni_recto)}}" width="250px" height="250px" alt="">
             </div>
             <div class="col-xl-3 col-md-3 col-lg-3 col-sm-12">
-                <img src="{{asset('assets/img/users/pieces')}}/{{$data->cni_verso}}" width="250px" height="250px" alt="">
+                <img src="{{asset($data->cni_verso)}}" width="250px" height="250px" alt="">
             </div>
         </div>
 

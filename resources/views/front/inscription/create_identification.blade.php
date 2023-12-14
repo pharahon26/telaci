@@ -133,8 +133,10 @@
             @csrf
             <h1 class="text">Inscription</h1>
             @include('components.message')
-            <input type="text" name="name" class="input-field" value="{{ old('name') }}" required
-                placeholder="Nom & Prenom">
+            <input type="text" name="nom" class="input-field" value="{{ old('nom') }}" required
+                   placeholder="Nom">
+            <input type="text" name="prenom" class="input-field" value="{{ old('prenom') }}" required
+                   placeholder="Prenom">
             <input type="text" name="phone" class="input-field" placeholder="Numéro de téléphone"
                 value="{{ old('phone') }}" required>
             <label for="" class="photo-label">
@@ -153,12 +155,10 @@
             <label for="" class="text-black">Accepter les conditions générales d'utilisations</label>
             <div>
                 <input type="checkbox" name="accepter" class="form-check-input">
-<!--
-                Oui <input type="radio" name="accepter" class="" value="1" checked>
-                Non <input type="radio" name="accepter" class="" value="0">-->
             </div>
 
             <button type="submit" class="button">CREER VOTRE PROFIL</button>
+            <br><br><br>
 
         </form>
     </div>
