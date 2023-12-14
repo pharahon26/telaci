@@ -2,8 +2,8 @@
 @section('content')
 
 <div class="container">
-    <div class="text-black">
-        <h3>Nombre de visite restant: {{$restevisite}}</h3>
+    <div class="">
+        <h3>Nombre de visite restant: <span class="text-danger"> {{$restevisite}}</span></h3>
         <h3>Detail de la maison</h3>
             <div class="row">
                 <img src="{{asset($data->photo_couverture)}}" height="250px" alt=""><br>
@@ -21,7 +21,6 @@
                     @if($data->has_balcon_avant==1) Balcon avant; @endif
                     @if($data->has_balcon_arriere==1) Balcon arriere @endif <br>
                 </div>
-
 
                 @foreach($images as $item)
                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
