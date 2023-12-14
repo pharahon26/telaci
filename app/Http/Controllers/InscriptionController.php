@@ -390,8 +390,11 @@ class InscriptionController extends Controller
             $data = User::create(
                 [
                     'name'=>$request->name,
+                    'nom'=>$request->name,
+                    'prenoms'=>' ',
                     //'email'=>$request->email,
                     'phone'=>$request->phone,
+                    'photo_profil'=>$photo,
                     'created_at'=>now(),
                     'is_demarcheur'=>$request->is_demarcheur,
                     'password'=>Hash::make($request->password),
@@ -405,7 +408,7 @@ class InscriptionController extends Controller
             $identity = InformationIdenty::create(
                 [
                     'name'=>$data->name,
-                    'photo'=>$photoName,
+                    'photo'=>$photo,
                     'phone1'=>$data->phone,
                     'created_at'=>now(),
                     'user_id'=>$data->id,
@@ -414,7 +417,14 @@ class InscriptionController extends Controller
             //on crée en meme temps son compte e-banking
             EbankProfil::create(
                 [
+                    'nom'=>$request->name,
+                    'prenoms'=>' ',
                     'balance'=>0,
+                    'photo'=>$photo,
+                    // 'email'=>$request->email,
+                    'phone'=>$request->phone,
+                    'is_demarcheur'=>true,
+                    'password'=>Hash::make($request->password),
                     'created_at'=>now(),
                     'information_identity_id'=>$identity->id,
                 ]);

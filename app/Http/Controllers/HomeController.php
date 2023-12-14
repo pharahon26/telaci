@@ -38,7 +38,7 @@ class HomeController extends Controller
     {
         $date = Date::now()->format('Y-m-d');
         $nbinscriptions = InformationIdenty::count('id');
-        $nblistediffusion = ListeDiffusion::count('id');
+        $nblistediffusion = 0;
         $nbmaisons = Place::count('id');
         $nbprogrammes = ProgrammeTv::count('id');
         $nbtypeabonnements = TypeAbonnement::count('id');

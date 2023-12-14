@@ -496,6 +496,7 @@ class ApiController extends Controller
         //on enregistre dans la table image la photo
         //traitement image
         $arrImg = $request->images;
+        $i = 0;
         foreach ($arrImg as $imgeA) {
             $image=$imgeA;
 
@@ -512,8 +513,10 @@ class ApiController extends Controller
                 );
                 if ($i = 0) {
                     $data->image_id = $img->id;
+                    $data->photo_couverture = $image;
                     $data->save();
                 }
+                $i++;
             }
             else
             {
