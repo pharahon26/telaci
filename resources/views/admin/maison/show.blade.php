@@ -66,7 +66,7 @@
                                         @if($data_images->count()>0)
                                             @foreach($data_images as $item)
                                                 <div class="col-3">
-                                                    <img src="{{asset('assets/img/places')}}/{{$item->url}}" alt="" width="250px" height="250px">
+                                                    <img src="{{asset($item->url)}}" alt="" width="250px" height="250px">
                                                 </div>
                                             @endforeach
                                         @else

@@ -38,15 +38,16 @@
                                 Contacts : {{$data->phone1}}<br>
                                 Email : {{$data->user->email}}<br>
                                 Role : @if($data->user->is_demarcheur==1) Démarcheur @else User Ebanking @endif<br>
+
                                 Statut inscription : @if($data->is_validated==1) <font color="green">Inscription validée</font>
                                 @else <font color="red">Inscription en attente de validation</font> @endif<br>
                                 Solde en compte : <font color="green">{{$data->user->balance}} F CFA</font> <br>
                                 Pieces d'identité: <br>
                             </p>
                                 <div class="d-flex">
-                                    <img src="{{asset('assets/img/users/photo')}}/{{$data->photo}}" alt="" width="250px" height="250px">
-                                    <img src="{{asset('assets/img/users/pieces')}}/{{$data->cni_recto}}" alt="" width="350px" height="250px">
-                                    <img src="{{asset('assets/img/users/pieces')}}/{{$data->cni_verso}}" alt="" width="350px" height="250px">
+                                    <img src="{{asset($data->photo)}}" alt="" width="250px" height="250px">
+                                    <img src="{{asset($data->cni_recto)}}" alt="" width="350px" height="250px">
+                                    <img src="{{asset($data->cni_verso)}}" alt="" width="350px" height="250px">
                                 </div>
                             <br>
                             @if($data->is_validated==0)

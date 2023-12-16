@@ -8,10 +8,10 @@ class InformationIdenty extends Model
 {
     protected $guarded = [];
 
-    // protected $with = ['user'];
+     protected $with = ['user'];
 
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
+     public function user()
+     {
+         return $this->belongsTo(User::class);
+     }
 }
