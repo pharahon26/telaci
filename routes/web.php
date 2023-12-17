@@ -216,6 +216,10 @@ Route::group(['prefix'=>'profil'], function()
     Route::get('/change', 'InscriptionController@showFormChangePassword')->name('profil.change');
     Route::get('{id}/change', 'InscriptionController@changePassword')->name('profil.updatepassword');
     Route::post('/{id}/update', 'InscriptionController@updateProfil')->name('profil.update');
+    Route::get('/{id}/edit_picture', 'InscriptionController@editPicture')->name('profil.editpicture');
+    Route::post('/{id}/edit_picture', 'InscriptionController@updatePicture')->name('profil.updatepicture');
+
+
 });
 //catalogue
 Route::group(['prefix'=>'catalogue'], function()
@@ -224,10 +228,10 @@ Route::group(['prefix'=>'catalogue'], function()
     Route::get('/', 'MaisonController@indexCatalogue')->name('catalogue.index');
     Route::get('/create', 'MaisonController@createCatalogue')->name('catalogue.create');
     Route::post('/create', 'MaisonController@storeCatalogue')->name('catalogue.store');
-    Route::get('/{id}/edit', 'MaisonController@editCatalogue')->name('catalogue.edit');
+    Route::get('/{ref}/edit', 'MaisonController@editCatalogue')->name('catalogue.edit');
     Route::get('/{ref}/edit_statut', 'MaisonController@editStatutCatalogue')->name('catalogue.edit_statut');
     Route::get('/{ref}/show', 'MaisonController@showCatalogue')->name('catalogue.show');
-    Route::post('/{id}/update', 'MaisonController@updateCatalogue')->name('catalogue.update');
+    Route::post('/{ref}/update', 'MaisonController@updateCatalogue')->name('catalogue.update');
 });
 //gestion des maisons
 Route::group(['prefix'=>'maisons'], function()

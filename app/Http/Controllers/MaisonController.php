@@ -31,7 +31,7 @@ class MaisonController extends Controller
 
 
         $datas = Place::where('commune_id',$request->commune_id)
-        ->where('is_occupe',0)
+            ->where('is_occupe',0)
             // ->where('nombre_piece',$request->nombre_piece)
             // ->where('nombre_salle_eau',$request->nombre_salle_eau)
             //->where('is_Bureau',0)
@@ -53,7 +53,7 @@ class MaisonController extends Controller
                     ->orWhere('has_balcon_arriere', $request->has_balcon_arriere)
                     ->orWhere('has_COUR_AVANT',$request->has_COUR_AVANT)
                     ->orWhere('has_COUR_ARRIERE',$request->has_COUR_ARRIERE);
-                    ;
+                ;
             })->inRandomOrder()
             ->limit(200)
             ->get();
@@ -82,7 +82,7 @@ class MaisonController extends Controller
                     ->orWhere('has_GARAGE', $request->has_GARAGE)
                     ->orWhere('has_balcon_avant', $request->has_balcon_avant)
                     ->orWhere('has_balcon_arriere', $request->has_balcon_arriere)
-                ->orWhere('has_COUR_AVANT',$request->has_COUR_AVANT)
+                    ->orWhere('has_COUR_AVANT',$request->has_COUR_AVANT)
                     ->orWhere('has_COUR_ARRIERE',$request->has_COUR_ARRIERE);
             })->inRandomOrder()
             ->limit(200)
@@ -234,7 +234,7 @@ class MaisonController extends Controller
     {
         $a = Place::with('image')->where('user_id', '=',$id)->withCount('passvisites')->get();
         return response()->json($a);
-        }
+    }
 
     public function index()
     {
@@ -681,6 +681,17 @@ class MaisonController extends Controller
             compact('data','images'));
     }
 
+    public function editCatalogue($ref)
+    {
+        $communes = Commune::get();
+        $data_place = Place::where('ref',$ref)->first();
+        $data = Place::findOrFail($data_place->id);
+        //$images = Image::where('place_id',$data_place->id)->get();
+        //dd($images);
+        return view('front.maison.edit_place',
+            compact('data','communes'));
+    }
+
     public function editStatutCatalogue(Request $request, $ref)
     {
         $data_place = Place::where('ref',$ref)->first();
@@ -688,6 +699,145 @@ class MaisonController extends Controller
         $data->is_occupe = $request->is_occupe;
         $data->save();
         return redirect()->back()->with('success','Statut mis a jour avec succès');
+    }
+
+    public function updateCatalogue(Request $request, $ref)
+    {
+        $couravant = $request->has_COUR_AVANT;
+        $courarriere = $request->has_COUR_ARRIERE;
+        $balconavant = $request->has_balcon_avant;
+        $balconarriere = $request->has_balcon_arriere;
+        $hasgardien = $request->has_GARDIEN;
+        $hasgarage = $request->has_GARAGE;
+        $haspiscine = $request->has_PISCINE;
+        if ($couravant==='on')
+        {
+            $request->has_COUR_AVANT=1;
+        }else
+        {
+            $request->has_COUR_AVANT=0;
+        }
+        if ($courarriere==='on')
+        {
+            $request->has_COUR_ARRIERE=1;
+        }else
+        {
+            $request->has_COUR_ARRIERE=0;
+        }
+        if ($balconavant==='on')
+        {
+            $request->has_balcon_avant=1;
+        }else
+        {
+            $request->has_balcon_avant=0;
+        }
+        if ($balconarriere==='on')
+        {
+            $request->has_balcon_arriere=1;
+        }else
+        {
+            $request->has_balcon_arriere=0;
+        }
+        if ($hasgardien==='on')
+        {
+            $request->has_GARDIEN=1;
+        }else
+        {
+            $request->has_GARDIEN=0;
+        }
+        if ($hasgarage==='on')
+        {
+            $request->has_GARAGE=1;
+        }else
+        {
+            $request->has_GARAGE=0;
+        }
+        if ($haspiscine==='on')
+        {
+            $request->is_HAUT_STANDING=1;
+            $request->has_PISCINE=1;
+        }else
+        {
+            $request->is_HAUT_STANDING=1;
+            $request->has_PISCINE=0;
+        }
+
+        switch ($request->type_maison) {
+            case "0":
+                $studio =1;
+                $chambre = 0;
+                $residence = 0;
+                $appartement = 0;
+                $maisonbasse = 0;
+                $duplexe = 0;
+                break;
+            case "1":
+                $studio =0;
+                $chambre = 1;
+                $residence = 0;
+                $appartement = 0;
+                $maisonbasse = 0;
+                $duplexe = 0;
+                break;
+            case "2":
+                $studio =0;
+                $chambre = 0;
+                $residence = 1;
+                $appartement = 0;
+                $maisonbasse = 0;
+                $duplexe = 0;
+                break;
+            case "3":
+                $studio =0;
+                $chambre = 0;
+                $residence = 0;
+                $appartement = 1;
+                $maisonbasse = 0;
+                $duplexe = 0;
+                break;
+            case "4":
+                $studio =0;
+                $chambre = 0;
+                $residence = 0;
+                $appartement = 0;
+                $maisonbasse = 1;
+                $duplexe = 0;
+                break;
+
+            default:
+                $studio =0;
+                $chambre = 0;
+                $residence = 0;
+                $appartement = 0;
+                $maisonbasse = 0;
+                $duplexe = 1;
+
+        }
+        $data_place = Place::where('ref',$ref)->first();
+        $data = Place::findOrFail($data_place->id);
+        $data->price=$request->price;
+        $data->proprio_name=$request->proprio_name;
+        $data->proprio_telephone=$request->proprio_telephone;
+        $data->description=$request->description;
+        $data->is_Studio=$studio;
+        $data->is_Chambre=$chambre;
+        $data->is_Residence=$residence;
+        $data->is_Appartment=$appartement;
+        $data->is_MAISON_BASSE=$maisonbasse;
+        $data->is_DUPLEX=$duplexe;
+        $data->has_PISCINE=$request->has_PISCINE;
+        $data->is_HAUT_STANDING=$request->is_HAUT_STANDING;
+        $data->has_COUR_AVANT=$request->has_COUR_AVANT;
+        $data->has_COUR_ARRIERE=$request->has_COUR_ARRIERE;
+        $data->has_GARDIEN=$request->has_GARDIEN;
+        $data->has_GARAGE=$request->has_GARAGE;
+        $data->has_balcon_avant=$request->has_balcon_avant;
+        $data->has_balcon_arriere=$request->has_balcon_arriere;
+        $data->nombre_piece=$request->nombre_piece;
+        $data->nombre_salle_eau=$request->nombre_salle_eau;
+        $data->commune_id=$request->commune_id;
+        $data->save();
+        return redirect()->route('catalogue.index')->with('success','Maison mis a jour avec succès');
     }
 
     public function create()

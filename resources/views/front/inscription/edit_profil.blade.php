@@ -30,29 +30,29 @@
                 </div>
                 <div class="col-sm-12 col-lg-4 col-md-4 col-xl-4">
                     <label for="" class="text-black">Second numero de téléphone</label>
-                    <input type="text" name="phone2" class="form-control" value="{{ old('phone2') }}">
+                    <input type="text" name="phone2" class="form-control" value="{{ $dataProfil->phone2 }}">
                 </div>
                 <div class="col-sm-12 col-lg-4 col-md-4 col-xl-4">
                     <label for="" class="text-black">Lieu de naissance</label>
-                    <input type="text" name="lieu_naissance" class="form-control" value="{{ old('lieu_naissance') }}"
+                    <input type="text" name="lieu_naissance" class="form-control" value="{{ $dataProfil->lieu_naissance }}"
                            required><br>
                 </div>
                 <div class="col-sm-12 col-lg-4 col-md-4 col-xl-4">
                     <label for="" class="text-black">Date de naissance</label>
-                    <input type="date" name="date_naissance" class="form-control" value="{{ old('date_naissance') }}"
+                    <input type="date" name="date_naissance" class="form-control" value="{{ $dataProfil->date_naissance }}"
                            required>
                 </div>
                 <div class="col-sm-12 col-lg-4 col-md-4 col-xl-4">
                     <label for="" class="text-black">Nationalité</label>
-                    <input type="text" name="nationalite" class="form-control" value="{{ old('nationalite') }}" required><br>
+                    <input type="text" name="nationalite" class="form-control" value="{{ $dataProfil->nationalite }}" required><br>
                 </div>
                 <div class="col-sm-12 col-lg-4 col-md-4 col-xl-4">
                     <label for="" class="text-black">Ville de residence</label>
-                    <input type="text" name="domicile" class="form-control" value="{{ old('domicile') }}" required>
+                    <input type="text" name="domicile" class="form-control" value="{{ $dataProfil->domicile }}" required>
                 </div>
                 <div class="col-sm-12 col-lg-4 col-md-4 col-xl-4">
                     <label for="" class="text-black">Numero de carte d'identité/passeport</label>
-                    <input type="text" name="numero_cni" class="form-control" value="{{ old('numero_cni') }}"
+                    <input type="text" name="numero_cni" class="form-control" value="{{ $dataProfil->numero_cni }}"
                            required><br>
                 </div>
                 <div class="col-sm-12 col-lg-4 col-md-4 col-xl-4">

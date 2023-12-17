@@ -22,6 +22,10 @@
                     <br><br>
                     <a href="{{route('profil.change')}}" class="btn btn-primary btn-lg">Modifier mon mot de passe</a>
                     <br><br>
+                    <a href="{{route('profil.editpicture',auth()->user()->id)}}" class="btn btn-primary btn-lg">Modifier ma photo de profil</a>
+                    <br><br>
+                    <a href="{{route('profil.edit',auth()->user()->id)}}" class="btn btn-primary btn-lg">Mettre à jour mes informations</a>
+                    <br><br>
                 <a href="{{route('abonnement.show_form')}}" class="btn btn-success btn-lg">Souscrire à un abonnement</a>
                     <br><br>
                 <a href="{{route('abonnement.list',auth()->user()->id)}}" class="btn btn-success btn-lg">Consulter mes abonnements</a>

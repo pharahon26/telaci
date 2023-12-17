@@ -47,9 +47,10 @@
 
                                     <td>
                                         <a href="{{route('catalogue.show',$data->ref)}}" class="btn btn-primary">Detail</a>
+                                        <a href="{{route('catalogue.edit',$data->ref)}}" class="btn btn-success">Modifier</a>
                                         <br>
                                         <button type="button" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                            Changer le statut
+                                            Definir comme occupée
                                         </button>
                                     </td>
 

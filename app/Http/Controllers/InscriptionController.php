@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Abonnement;
 use App\Models\EbankProfil;
 use App\Models\InformationIdenty;
+use App\Models\Transaction;
 use App\Models\User;
+use App\Models\Place;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
 class InscriptionController extends Controller
@@ -108,24 +111,24 @@ class InscriptionController extends Controller
         return response()->json($data);
     }
 
-/*    public function updateUser(Request $request, $id)
-    {
-        $data = User::findOrFail($id);
-        $data->nom = $request->nom;
-        $data->prenoms = $request->prenoms;
-        $data->name = $request->nom . ' '. $request->prenoms;
-        $data->email = $request->email;
-        $data->phone = $request->phone;
-        $data->is_staff = $request->is_staff;
-        $data->is_demarcheur = $request->is_demarcheur;
-        $data->is_suspended = $request->is_suspended;
-        $data->is_validated = $request->is_validated;
-        $data->password = Hash::make($request->password);
-        $data->remember_password = $request->password;
-        $data->updated_at = now();
-        $data->save();
-        return response()->json($data);
-    }*/
+    /*    public function updateUser(Request $request, $id)
+        {
+            $data = User::findOrFail($id);
+            $data->nom = $request->nom;
+            $data->prenoms = $request->prenoms;
+            $data->name = $request->nom . ' '. $request->prenoms;
+            $data->email = $request->email;
+            $data->phone = $request->phone;
+            $data->is_staff = $request->is_staff;
+            $data->is_demarcheur = $request->is_demarcheur;
+            $data->is_suspended = $request->is_suspended;
+            $data->is_validated = $request->is_validated;
+            $data->password = Hash::make($request->password);
+            $data->remember_password = $request->password;
+            $data->updated_at = now();
+            $data->save();
+            return response()->json($data);
+        }*/
 
     public function updateUserProfil(Request $request)
     {
@@ -378,6 +381,40 @@ class InscriptionController extends Controller
         }
     }
 
+    public function editPicture($id)
+    {
+        if(\auth()->user()->id != $id)
+        {
+            return redirect()->back()->with('danger','Vous n\'etes pas autorisé à acceder à cette page');
+        }
+        else
+        {
+            $check = InformationIdenty::where('user_id',$id)->first();
+            $dataProfil = InformationIdenty::findOrFail($check->id);
+            return view('front.inscription.edit_profil_picture', compact('dataProfil'));
+
+        }
+    }
+
+    public function updatePicture(Request $request, $id)
+    {
+        $id = Auth::user()->id;
+        $photo=$request->file('photo');
+        $photoName=uniqid().'.'. $photo->extension();
+        $photo = $photo->move('assets/img/users/photo', $photoName);
+        //on update les info dans la table informationIdentity
+        $dataInfo = InformationIdenty::where('user_id',$id)->first();
+        $data = InformationIdenty::findOrFail($dataInfo->id);
+        $data->photo = $photo;
+        $data->save();
+        //on update les datas dans la table user
+        $dataUser = User::findOrFail($id);
+        $dataUser->photo_profil = $photo;
+        $dataUser->save();
+
+        return redirect()->route('profil.index')->with('success','Photo de profil mis à jour avec succès');
+
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -542,6 +579,103 @@ class InscriptionController extends Controller
         /// ajouter le contact à la liste des contatcts CINETPAY
 
         return redirect()->back()->with('success','Inscription validée avec succès');
+    }
+
+    public function validateInscriptionWithAbonnemnt(Request $request, $id)
+    {
+        $data = InformationIdenty::findOrFail($id);
+        //on recupere les info dans la table users
+        $data_user = User::findOrFail($data->user_id);
+        $data->is_validated = 1;
+        $data->save();
+        //on update en meme temps les info dans la table user
+        $data_user->is_validated = 1;
+        $data_user->save();
+        //on enregistre son abonnement pour 1 mois
+        //on save la transaction
+        $transaction = Transaction::create(
+            [
+                'transaction_number'=>'Promo',
+                'date_transaction'=>now(),
+                'amount'=>0,
+                'transaction_way'=>'Tela',
+                'transaction_type'=>'Tela Promo',
+                'operation_id'=>'Tela',
+                'created_at'=>now(),
+            ]
+        );
+        //on enregistre labonnement
+        $uniqid = uniqid();
+        $abonnement = \App\Abonnement::create(
+            [
+                'type'=>'Promo',
+                'type_abonnement_id'=>1,
+                'start_date'=>now(),
+                'end_date'=>date('Y-m-d', strtotime(' + 1 month')),
+                'transaction_id'=>1,
+                'created_at'=>now(),
+                'user_id'=>$data->user_id,
+                'is_actif'=>1
+            ]
+        );
+        $user_places = Place::where('user_id',$data->user_id)->get();
+        foreach ($user_places as $item)
+        {
+            if($item->is_validated==false)
+            {
+                $item->is_validated =true;
+                $item->save();
+            }
+        }
+
+        /*$token = $this->getLoginToken();
+        $this->addNumber($data->phone1,225,$token,'', $data->name);*/
+
+        return redirect()->back()->with('success','Inscription validée avec succès');
+    }
+
+    public function getLoginToken()
+    {
+        /// fonction pour vérifier si le payement a bien été effectué au niveau de cinetpay
+
+        $response = Http::asForm()->post('https://client.cinetpay.com/v1/auth/login',[
+            'apikey ' => '412126359654bb6ed651509.14435556',
+            'password ' => '5865665',
+        ]);
+
+        $jsonData = $response->json();
+
+        /// on verifier que le payement est réussi et la some est bonne
+        if ($jsonData->code == '0') {
+            return $jsonData->data->token;
+        } else {
+            return '';
+        }
+
+    }
+
+    // ajouter numero 0 la liste de contacts CINET_PAY
+    public function addNumber($phone, $prefix='225', $token, $mail='', $name)
+    {
+        /// fonction pour vérifier si le payement a bien été effectué au niveau de cinetpay
+
+        $response = Http::withToken($token)->post('https://client.cinetpay.com/v1/transfer/contact',[
+            "prefix"=> $prefix,
+            "phone" => $phone,
+            "name" => $name,
+            "surname" => $name,
+            "email" => $mail
+        ] );
+
+        $jsonData = $response->json();
+
+        /// on verifier que le payement est réussi et la some est bonne
+        if ($jsonData->code == '0') {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     /**
