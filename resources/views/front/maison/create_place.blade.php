@@ -61,8 +61,12 @@
             <br>
 
             <div class="">
-                <label class="form-check-label" for="">Habitat haut standing Avec piscine:</label>
-                <input type="checkbox" name="has_PISCINE" value="" class="form-check-input">
+                <label class="form-check-label" for="">Maison haut standing :</label>
+                <input type="checkbox" name="is_HAUT_STANDING" value="" class="form-check-input">
+            </div><br>
+            <div class="">
+                Maison Avec piscine <input type="radio" name="has_PISCINE" value="1" class="form-check-input" required>
+                Maison Sans piscine <input type="radio" name="has_PISCINE" value="0" class="form-check-input" required>
             </div><br>
         </div>
         <!-- Champs pour le nombre de pièces -->

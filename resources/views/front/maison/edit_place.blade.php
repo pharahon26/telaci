@@ -61,8 +61,12 @@
             <br>
 
             <div class="">
-                <label class="form-check-label" for="">Habitat haut standing Avec piscine:</label>
-                <input type="checkbox" name="has_PISCINE" @if($data->has_PISCINE==1) checked @endif class="form-check-input">
+                <label class="form-check-label" for="">Maison haut standing :</label>
+                <input type="checkbox" name="is_HAUT_STANDING" @if($data->is_HAUT_STANDING==1) checked @endif class="form-check-input">
+            </div><br>
+            <div class="">
+                Maison Avec piscine <input type="radio" name="has_PISCINE" @if($data->has_PISCINE==1) checked @endif value="1" class="form-check-input" required>
+                Maison Sans piscine <input type="radio" name="has_PISCINE" @if($data->has_PISCINE==0) checked @endif value="0" class="form-check-input" required>
             </div><br>
         </div>
         <!-- Champs pour le nombre de pièces -->

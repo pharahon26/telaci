@@ -28,12 +28,10 @@ class MaisonController extends Controller
     }
     public function searchPlace(Request $request)
     {
-
-
         $datas = Place::where('commune_id',$request->commune_id)
             ->where('is_occupe',0)
-            // ->where('nombre_piece',$request->nombre_piece)
-            // ->where('nombre_salle_eau',$request->nombre_salle_eau)
+            ->where('nombre_piece',$request->nombre_piece)
+            ->where('nombre_salle_eau',$request->nombre_salle_eau)
             //->where('is_Bureau',0)
             ->where('is_validated',1)
             ->where(function ($query) use ($request) {
@@ -53,7 +51,6 @@ class MaisonController extends Controller
                     ->orWhere('has_balcon_arriere', $request->has_balcon_arriere)
                     ->orWhere('has_COUR_AVANT',$request->has_COUR_AVANT)
                     ->orWhere('has_COUR_ARRIERE',$request->has_COUR_ARRIERE);
-                ;
             })->inRandomOrder()
             ->limit(200)
             ->get();
@@ -692,6 +689,54 @@ class MaisonController extends Controller
             compact('data','communes'));
     }
 
+    public function editPictureCatalogue($ref)
+    {
+        $data_place = Place::where('ref',$ref)->first();
+        $data = Place::findOrFail($data_place->id);
+        $imageData = Image::where('place_id',$data->id)->get();
+        return view('front.maison.edit_place_picture',
+            compact('data','imageData'));
+    }
+
+    public function updatePictureCatalogue(Request $request, $ref)
+    {
+        //on recupere les data de la maison
+        $data_place = Place::where('ref',$ref)->first();
+        $data = Place::findOrFail($data_place->id);
+        //on recupere les photos de la maison
+        $imageData = Image::where('place_id',$data->id)->get();
+        //dd($imageData);
+        //$imageData = Image::findOrFail($imagePlaceId);
+        //traitement photo de couverture
+        $photo_couverture=$request->file('photo_couverture');
+        $photoCouvertureName=time().'.'. $photo_couverture->extension();
+        $photo_couverture = $photo_couverture->move('assets/img/places', $photoCouvertureName);
+        //on update la photo de façade
+        $data->photo_couverture = $photo_couverture;
+        $data->save();
+        //traitement des autres photo
+
+        foreach($imageData as $item)
+        {
+            $maj = Image::find($item->id);
+            if($request->file('photo'.$item->id)!=null)
+            {
+                $photo ='photo';
+                $photo =$request->file('photo'.$item->id);
+                //dd($photo);
+                $photoName=uniqid().'.'. $photo->extension();
+                $photo = $photo->move('assets/img/places', $photoName);
+
+                $maj->url = $photo;
+                $maj->save();
+
+            }
+        }
+
+        return redirect()->route('catalogue.index')->with('success','Photo modifiée avec succès');
+
+    }
+
     public function editStatutCatalogue(Request $request, $ref)
     {
         $data_place = Place::where('ref',$ref)->first();
@@ -710,6 +755,7 @@ class MaisonController extends Controller
         $hasgardien = $request->has_GARDIEN;
         $hasgarage = $request->has_GARAGE;
         $haspiscine = $request->has_PISCINE;
+        $isHautStanding = $request->is_HAUT_STANDING;
         if ($couravant==='on')
         {
             $request->has_COUR_AVANT=1;
@@ -752,14 +798,13 @@ class MaisonController extends Controller
         {
             $request->has_GARAGE=0;
         }
-        if ($haspiscine==='on')
+        if ($isHautStanding==='on')
         {
             $request->is_HAUT_STANDING=1;
-            $request->has_PISCINE=1;
         }else
         {
-            $request->is_HAUT_STANDING=1;
-            $request->has_PISCINE=0;
+            $request->is_HAUT_STANDING=0;
+
         }
 
         switch ($request->type_maison) {
@@ -860,6 +905,7 @@ class MaisonController extends Controller
         $hasgardien = $request->has_GARDIEN;
         $hasgarage = $request->has_GARAGE;
         $haspiscine = $request->has_PISCINE;
+        $isHautStanding = $request->is_HAUT_STANDING;
         if ($couravant==='on')
         {
             $request->has_COUR_AVANT=1;
@@ -902,14 +948,12 @@ class MaisonController extends Controller
         {
             $request->has_GARAGE=0;
         }
-        if ($haspiscine==='on')
+        if ($isHautStanding==='on')
         {
             $request->is_HAUT_STANDING=1;
-            $request->has_PISCINE=1;
         }else
         {
-            $request->is_HAUT_STANDING=1;
-            $request->has_PISCINE=0;
+            $request->is_HAUT_STANDING=0;
         }
 
         switch ($request->type_maison) {
@@ -1097,10 +1141,17 @@ class MaisonController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Place $id)
     {
-        //
+        //on recupere l'id de la maison
+        $placeId = $id->id;
+        //on supprime la maison
+        $id->delete();
+        //on supprime les photo de la maison
+        $picture = Image::where('place_id',$placeId)->delete();
+        return redirect()->back()->with('success','Maison supprimée avec succès');
+        //dd($picture);
     }
 }

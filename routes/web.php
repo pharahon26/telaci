@@ -177,11 +177,27 @@ Route::group(['prefix' => 'api'], function (){
         //Route::post('/{cpm_trans_id}/buy_pass_tv', 'ApiController@buyPassTv');
         Route::post('/buy_pass_tv', 'PassTvController@buyPassTv');
         Route::post('/{code}/verif', 'PassTvController@verifPassTv');
-
     });
 
     //GESTION DES DATAS DE CINETPAY
     Route::post('notify', 'ApiController@notifyPaiement');
+
+    //GESTION DES PACKS OU INSERTION PUBLICITAIRES
+    Route::group(['prefix'=>'pack_publicitaire'], function()
+    {
+        Route::get('/', 'PackPublicitaireController@getAllPackPublicitaires');
+        Route::get('{id}/show', 'PackPublicitaireController@showPackPublicitaire');
+
+    });
+
+    //GESTION DES SOUSCRIPTIONS AU DIFFERENTS PACKS OU INSERTION PUBLICITAIRES
+    Route::group(['prefix'=>'souscription_pack_publicitaire'], function()
+    {
+        Route::get('/', 'SouscriptionPackPublicitaireController@getAllSouscriptionPackPublicitaires');
+        Route::post('/create', 'SouscriptionPackPublicitaireController@createSouscriptionPackPublicitaires');
+        Route::get('{id}/show', 'SouscriptionPackPublicitaireController@showSouscriptionPackPublicitaire');
+
+    });
 
 });
 
@@ -229,6 +245,12 @@ Route::group(['prefix'=>'catalogue'], function()
     Route::get('/create', 'MaisonController@createCatalogue')->name('catalogue.create');
     Route::post('/create', 'MaisonController@storeCatalogue')->name('catalogue.store');
     Route::get('/{ref}/edit', 'MaisonController@editCatalogue')->name('catalogue.edit');
+    //MODIFIER LES PHOTOS DES MAISONS LE 22-12-2023
+    Route::get('/{ref}/editpicture', 'MaisonController@editPictureCatalogue')->name('catalogue.editpicture');
+    Route::post('/{ref}/editpicture', 'MaisonController@updatePictureCatalogue')->name('catalogue.updatepicture');
+    Route::get('/{id}/delete', 'MaisonController@destroy')->name('catalogue.delete');
+
+    //END MODIFIER LES PHOTOS DES MAISONS LE 22-12-2023
     Route::get('/{ref}/edit_statut', 'MaisonController@editStatutCatalogue')->name('catalogue.edit_statut');
     Route::get('/{ref}/show', 'MaisonController@showCatalogue')->name('catalogue.show');
     Route::post('/{ref}/update', 'MaisonController@updateCatalogue')->name('catalogue.update');
