@@ -25,7 +25,7 @@ class SouscriptionPackPublicitaireController extends Controller
             [
                 'nom'=>$request->nom,
                 'entreprise'=>$request->entreprise,
-                'cni'=>$request->cni,
+                'commerciale'=>$request->commerciale,
                 'pack_publicite_id'=>$request->pack_publicite_id,
             ]
         );

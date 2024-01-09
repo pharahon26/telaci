@@ -18,7 +18,10 @@ return new class extends Migration
             $table->text('nom');
             $table->text('entreprise')->nullable();
             $table->text('cni')->nullable();
+           
+            
             $table->timestamps();
+
 
             $table->unsignedBigInteger('pack_publicite_id');
             $table->foreign('pack_publicite_id')->references('id')->on('pack_publicites')

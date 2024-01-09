@@ -183,7 +183,9 @@ Route::group(['prefix' => 'api'], function (){
     Route::post('notify', 'ApiController@notifyPaiement');
 
     //GESTION DES PACKS OU INSERTION PUBLICITAIRES
-    Route::group(['prefix'=>'pack_publicitaire'], function()
+
+   
+    Route::group(['prefix'=>'pack_publicitaire', 'middleware' => 'ensure.www'], function()
     {
         Route::get('/', 'PackPublicitaireController@getAllPackPublicitaires');
         Route::get('{id}/show', 'PackPublicitaireController@showPackPublicitaire');
@@ -191,7 +193,7 @@ Route::group(['prefix' => 'api'], function (){
     });
 
     //GESTION DES SOUSCRIPTIONS AU DIFFERENTS PACKS OU INSERTION PUBLICITAIRES
-    Route::group(['prefix'=>'souscription_pack_publicitaire'], function()
+    Route::group(['prefix'=>'souscription_pack_publicitaire', 'middleware' => 'ensure.www'], function()
     {
         Route::get('/', 'SouscriptionPackPublicitaireController@getAllSouscriptionPackPublicitaires');
         Route::post('/create', 'SouscriptionPackPublicitaireController@createSouscriptionPackPublicitaires');

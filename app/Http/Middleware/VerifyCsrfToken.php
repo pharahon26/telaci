@@ -14,5 +14,6 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         'http://127.0.0.1/telaci/public/*',
         '/api/*',
+        'http://localhost:8000/*',
     ];
 }
