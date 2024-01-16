@@ -98,19 +98,10 @@
             }
         }
 
+
         @media screen and (max-width: 500px) {
-            .registration-form-container .text {
-                font-size: 40px;
-            }
-
-            .input-field {
-                width: 90%;
-            }
-        }
-
-        @media screen and (max-width: 400px) {
-            .registration-form-container .text {
-                font-size: 35px;
+            .registration-form-container form{
+                height: 100vh;
             }
         }
     </style>

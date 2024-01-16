@@ -65,8 +65,10 @@
         }
 
         @media screen and (max-width: 900px) {
+            .login-form-container {
+                height: 70vh
+            }
             .login-form-container form {
-
                 width: 90vw;
             }
 
@@ -81,13 +83,6 @@
         }
 
         @media screen and (max-width: 500px) {
-            .login-form-container form {
-                height: 70vh;
-            }
-
-            .login-form-container .text {
-                font-size: 40px;
-            }
 
             .input-field {
                 width: 90%;
@@ -96,10 +91,6 @@
         }
 
         @media screen and (max-width: 400px) {
-            .login-form-container .text {
-                font-size: 35px;
-            }
-
             .login-form-container form {
                 gap: 30px;
             }
