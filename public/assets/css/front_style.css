@@ -1,127 +1,32 @@
-html, body {
-    background-color: white;
-}
-
-.no-scroll {
-    overflow: hidden;
-}
 * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
+}
+html,
+body {
+    background-color: white;
+}
+.no-scroll {
+    overflow: hidden;
 }
 p {
-    margin: 0
-;
+    margin: 0;
 }
 .App {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: auto;
-    padding:0 5rem;
+    padding: 0 5rem;
 }
 
-@media screen and (max-width:800px) {
-    .App {
-        padding: 0 3rem;
-    }
-}
-@media screen and (max-width:800px) {
-    .App {
-        padding: 0 1rem;
-    }
-}
 .pub {
     width: 200px;
     margin: 3rem auto;
 }
 
-.carousel-inner {
-    width: 600px;
-    object-fit: contain;
-}
-
-.contact-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-left: 1.5rem;
-    background-color: #142142;
-    height: 600px;
-    width: 100%;
-}
-.contact-info {
-    height: 80%;
-    width: 50%;
-}
-.contact-info>*{
-    display: flex;
-    padding: 0 2rem;
-    height: 25%;
-    width: 100%;
-    border: 2px solid #142142;
-}
-.contact-logo-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 50%;
-}
-.contact-section, .email-section {
-    width: 100%;
-    justify-content: space-evenly;
-    flex-direction: column;
-}
-
-.call-center , .whatsapp{
-    display: flex;
-    height: 50%;
-    width: 100%;
-    flex-direction: column;
-    justify-content: center;
-}
-.contact-title {
-    align-items: center;
-    background-color: #081334;
-    color: #1ee2fe;
-    font-size: 50px;
-}
-.contact-section, .email-section {
-    background-color: #fffffc;
-}
-.social-section {
-    align-items: center;
-    justify-content: space-between;
-    padding-right: 2rem;
-    background-color: #1ee2fe;
-}
-.contact-text {
-    font-weight: bold;
-    color: #081334d0;
-}
-.contact-details, .email-details {
-    display: flex;
-    justify-content: space-between;
-    color: #1a284dad;
-    font-weight: 600;
-    height: max-content;
-}
-.social-network-logo {
-    display: flex;
-    width: 10rem;
-    justify-content: space-between;
-}
-.social-network-logo>* {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-    border: 1px solid #142142;
-    border-radius: 50%;
-}
 .options-container {
     display: flex;
     width: 100%;
@@ -130,220 +35,18 @@ p {
     flex-direction: column;
     margin-top: 20px;
 }
-.location-button {
-    background-color: #1e9dfe;
-    /* color: white; */
-    border: none;
-    padding: 15px 0px;
-    margin-top: 40px;
-    text-align: center;
-    width: 15rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-.location-button:hover {
-    background-color: #1367a7;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-
-    color: white;
-}
-.carousel-item {
-    transition: opacity 1s ease-in-out; /* Ajoutez une transition pour une animation en fondu */
-}
-@media screen and (max-width: 1300px){
-    .contact-info {
-        height: 80%;
-        width: 55%;
-    }
-    .contact-info>*{
-        display: flex;
-        padding: 0 1rem 0 2rem;
-        height: 25%;
-        width: 100%;
-        border: 2px solid #142142;
-    }
-    .contact-logo-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        width: 45%;
-    }
-}
-@media screen and (max-width: 1200px){
-    .contact-info {
-        height: 80%;
-        width: 66%;
-    }
-    .contact-info>*{
-        display: flex;
-        padding: 0 1rem 0 2rem;
-        height: 25%;
-        width: 100%;
-        border: 2px solid #142142;
-    }
-    .contact-details, .email-details {
-        font-size: 14px;
-    }
-    .contact-logo-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        width: 40%;
-    }
-}
-@media screen and (max-width: 1000px) {
-    .contact-info {
-        width: 55%;
-    }
-    .contact-logo-container {
-        width: 45%;
-    }
-}
-@media screen and (max-width: 900px) {
-
-    .contact-info {
-        height: 40%;
-        width: 80%;
-    }
-    .contact-logo-container {
-        height: 40%;
-    }
-    .contact-container {
-        justify-content: space-around;
-        flex-direction: column;
-        padding-left: 0;
-        height: 800px;
-    }
-    .contact-info {
-        height: 50%;
-        width: 90%;
-
-    }
-    .contact-details, .email-details {
-        font-size: 12px;
-    }
-    .contact-info>*{
-        padding: 0 1rem 0 1rem;
-    }
-}
-@media screen and (max-width: 850px) {
-    .carousel-inner {
-        width: auto;
-        object-fit: contain;
-    }
-
-}
-@media screen and (max-width: 600px) {
-
-}
-@media screen and (max-width: 400px) {
-    .contact-container {
-        justify-content: space-around;
-        flex-direction: column;
-        padding-left: 0;
-        height: 800px;
-    }
-    .contact-info {
-        height: 50%;
-        width: 90%;
-
-    }
-    .contact-details, .email-details {
-        font-size: 10px;
-    }
-    .contact-text {
-        font-size: 12px;
-    }
-    .contact-info>*{
-        padding: 0 1rem 0 1rem;
-    }
-}
-
-.search-form {
-    width: 100%;
-}
-.table-container {
-    display: flex;
-    flex-direction: column;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-table {
-    border: 5px solid #a8d6ff;
-    width: 100%;
-    background-color: white
-}
-
-th, td {
-    border: 1px solid white;
-    padding: 8px;
-    text-align: center;
-}
-/* Maison.css */
-/* Style pour les premiers <td> de chaque ligne */
-.table-container td:first-child {
-    font-weight: 600;
-    background-color: #2685d8; /* Bleu */
-    color: white; /* Texte en blanc */
-    padding: 5px; /* Espace autour du texte */
-}
-
-/* Style pour les deuxièmes <td> de chaque ligne */
-tr td:nth-child(2) {
-    background-color: #cfe9ff; /* Couleur blanche pour le deuxième <td> */
-}
-
-tr:nth-child(odd) td:nth-child(2) {
-    background-color: #a8d6ff; /* Couleur rouge pour les deuxièmes <td> des lignes impaires */
-}
-
-.select-container select option:first-child {
-    display: none;
-}
-/* Utilisation de Flexbox pour gérer la largeur des colonnes */
-tr {
-    display: flex;
-}
-td {
-    display: flex;
-}
-td:last-child {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-td:first-child {
-    flex: 1; /* La première colonne prend tout l'espace */
-}
-
-td:not(:first-child) {
-    flex: 1; /* Les autres colonnes prennent 50% de l'espace */
-}
-
-/*mon css perso*/
-.img-places{
+.img-places {
     width: 100%;
     height: 250px;
 }
 
-.perso{
-    font-weight: bold;
-    font-size: 20px;
-    color: #0451b0;
-    margin-bottom: 10px;
+@media screen and (max-width: 800px) {
+    .App {
+        padding: 0 3rem;
+    }
 }
-.couleur_perso{
-    color: #0451b0;
-}
-
-.espace{
-    margin-bottom: 10px;
+@media screen and (max-width: 800px) {
+    .App {
+        padding: 0 1rem;
+    }
 }

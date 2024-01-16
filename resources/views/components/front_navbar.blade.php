@@ -49,7 +49,7 @@
     }
 
     .link-container a {
-        font-size: 20px;
+        font-size: 13px;
         font-weight: 500;
         color: black;
         text-decoration: none;
@@ -67,35 +67,6 @@
         color: black;
     }
 
-    .button-container {
-        display: flex;
-        width: 62rem;
-        justify-content: space-between;
-    }
-
-    .button-container a,
-    .button-container button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 2.5rem;
-        width: 20rem;
-        color: black;
-        font-weight: bold;
-        text-decoration: none;
-        cursor: pointer;
-        font-size: 14px;
-        border: 3px solid black;
-        background-color: white;
-        border-radius: 3rem;
-        transition: all ease 0.3s;
-    }
-
-    .button-container a:hover,
-    .button-container button:hover {
-        border: 3px solid #1e9dfe;
-        color: #1e9dfe;
-    }
 
     .menu-items {
         display: none;
@@ -125,8 +96,7 @@
         transition: all 0.3s ease-in-out;
     }
 
-    .show-menu a,
-    .show-menu button {
+    .show-menu a {
         display: flex;
         margin: 10px;
         color: black;
@@ -140,23 +110,48 @@
         text-decoration: none;
     }
 
-    .show-menu a.active,
-    .show-menu button.active {
+    .show-menu button {
+        width: 100%;
+    }
+
+    .show-menu button a {
+        text-align: center;
+        color: white;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        font-weight: normal;
+        margin: 0;
+        background-color: transparent;
+    }
+
+    .show-menu a.active {
         color: #1e9dfe;
         border-bottom: 2px solid #1e9dfe;
     }
 
-    .show-menu a:hover,
-    .show-menu button:hover {}
+    .btn-container {
+        position: relative;
+        top: 5%;
+        left: 3%;
+        width: max-content;
+        display: flex;
+        height: 6rem;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-between;
+    }
 
     .burger-menu-button-container {
-        display: none;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
     }
 
     .burger-menu-button {
         display: flex;
         flex-direction: column;
-        cursor: pointer;
         background: none;
         border: none;
         padding-right: 10px;
@@ -186,10 +181,6 @@
 
 
     @media screen and (max-width: 1000px) {
-        .burger-menu-button-container {
-            display: flex;
-            align-items: center;
-        }
 
         #menu-text {
             max-height: 2em;
@@ -225,22 +216,27 @@
             display: none;
         }
     }
+
     @media screen and (max-width: 800px) {
         .logo-tela {
             height: 60px;
         }
+
         .navbar-text {
             font-size: 20px;
         }
     }
+
     @media screen and (max-width: 500px) {
         .show-menu {
             padding: 8rem 0 0 3rem;
 
         }
+
         .logo-tela {
             height: 50px;
         }
+
         .navbar-text {
             text-align: start;
             font-size: 16px;
@@ -258,64 +254,49 @@
             <h5 id="menu-text">Menu</h5>
         </div>
         <div class="logo-tela">
-            <img src="{{ asset('assets/img/logo/logo.png') }}" class="logo-tela" alt="">
+            <a href="/">
+                <img src="{{ asset('assets/img/logo/logo.png') }}" class="logo-tela" alt="logo-tela">
+            </a>
         </div>
-        <div class="button-container">
-            @auth
-                <a href="{{ route('logout') }}">Se Déconnecter</a>
-                <a href="{{ route('profil.index') }}">Mon profil</a>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModale">
-                    Verifier mon pass
-                </button>
-                <a href="{{ route('passvisite.index') }}">Acheter un pass</a>
-                <a href="{{ route('abonnement.show_form') }}">Souscrire abonnement</a>
-            @else
-                <a href="{{ route('login.index') }}">Se connecter</a>
-                <a href="{{ route('inscription.create') }}">S'abonner</a>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModale">
-                    Verifier mon pass
-                </button>
-                <a href="{{ route('passvisite.index') }}">Acheter un pass</a>
-                <a href="{{ route('abonnement.show_form') }}">Souscrire abonnement</a>
-            @endif
-        </div>
-
-
         <div class="menu-items" id="menu-items">
             @auth
                 <a href="{{ route('index') }}" class="{{ Request::is('/') ? 'active' : '' }}">Accueil</a>
-                <a href="{{ route('logout') }}">Se Déconnecter</a>
                 <a href="{{ route('profil.index') }}">Mon profil</a>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModale">
-                    Verifier mon pass
-                </button>
-                <a href="{{ route('passvisite.index') }}">Acheter un pass</a>
-                <a href="{{ route('abonnement.show_form') }}">Souscrire abonnement</a>
                 <a href="{{ route('about') }}" class="{{ Request::is('a-propos') ? 'active' : '' }}">A propos</a>
                 <a href="{{ route('maison.choix') }}" class="{{ Request::is('maisons/choix') ? 'active' : '' }}">Maison à
                     louer</a>
                 <a href="{{ route('ebanking.index') }}" class="{{ Request::is('finance') ? 'active' : '' }}">Tela
                     finance</a>
-                <a href="{{ route('tv.index') }}" class="{{ Request::is('programmes_tv') ? 'active' : '' }}">Tela TV</a>
-                <a href="{{ route('condition.index') }}" class="{{ Request::is('condition') ? 'active' : '' }}">CGU</a>
+                {{-- <a href="{{ route('tv.index') }}" class="{{ Request::is('programmes_tv') ? 'active' : '' }}">CGU</a> --}}
                 <a href="{{ route('contact') }}" class="{{ Request::is('contact') ? 'active' : '' }}">Contacts</a>
+                <div class="btn-container">
+                    <button type="button" class="btn btn-danger">
+                        <a href="{{ route('logout') }}">Se déconnecter</a>
+                    </button>
+                    <button type="button" data-bs-toggle="modal" class="btn btn-warning" data-bs-target="#exampleModale">
+                        Verifier mon pass
+                    </button>
+                </div>
             @else
                 <a href="{{ route('index') }}" class="{{ Request::is('/') ? 'active' : '' }}">Accueil</a>
-                <a href="{{ route('login.index') }}">Se connecter</a>
-                <a href="{{ route('inscription.create') }}">S'abonner</a>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModale">
-                    Verifier mon pass
-                </button>
-                <a href="{{ route('passvisite.index') }}">Acheter un pass</a>
-                <a href="{{ route('abonnement.show_form') }}">Souscrire abonnement</a>
+                <a href="{{ route('login.index') }}" class="{{ Request::is('connexion') ? 'active' : '' }}">Se
+                    connecter</a>
+                <a href="{{ route('inscription.create') }}"
+                    class="{{ Request::is('inscriptions/create') ? 'active' : '' }}">S'abonner</a>
+
                 <a href="{{ route('about') }}" class="{{ Request::is('a-propos') ? 'active' : '' }}">A propos</a>
                 <a href="{{ route('maison.choix') }}" class="{{ Request::is('maisons/choix') ? 'active' : '' }}">Maison à
                     louer</a>
                 <a href="{{ route('ebanking.index') }}" class="{{ Request::is('finance') ? 'active' : '' }}">Tela
                     finance</a>
                 <a href="{{ route('tv.index') }}" class="{{ Request::is('programmes_tv') ? 'active' : '' }}">Tela TV</a>
-                <a href="{{ route('condition.index') }}" class="{{ Request::is('condition') ? 'active' : '' }}">CGU</a>
+                {{-- <a href="{{ route('tv.index') }}" class="{{ Request::is('programmes_tv') ? 'active' : '' }}">CGU</a> --}}
                 <a href="{{ route('contact') }}" class="{{ Request::is('contact') ? 'active' : '' }}">Contacts</a>
+                <div class="btn-container">
+                    <button type="button" data-bs-toggle="modal" class="btn btn-warning" data-bs-target="#exampleModale">
+                        Verifier mon pass
+                    </button>
+                </div>
             @endauth
         </div>
 
@@ -327,7 +308,7 @@
             louer</a>
         <a href="{{ route('ebanking.index') }}" class="{{ Request::is('finance') ? 'active' : '' }}">Tela finance</a>
         <a href="{{ route('tv.index') }}" class="{{ Request::is('programmes_tv') ? 'active' : '' }}">Tela TV</a>
-        <a href="{{ route('condition.index') }}" class="{{ Request::is('condition') ? 'active' : '' }}">CGU</a>
+        {{-- <a href="{{ route('tv.index') }}" class="{{ Request::is('programmes_tv') ? 'active' : '' }}">CGU</a> --}}
         <a href="{{ route('contact') }}" class="{{ Request::is('contact') ? 'active' : '' }}">Contacts</a>
     </div>
     @if (!Request::is('contact') && !Request::is('programmes_tv') && !Request::is('finance'))

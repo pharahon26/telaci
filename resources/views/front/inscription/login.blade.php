@@ -5,57 +5,63 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-evenly;
+            justify-content: center;
             align-items: center;
         }
 
         .login-form-container form {
             display: flex;
-            align-items: center;
-            justify-content: space-evenly;
             flex-direction: column;
-            border: 3px solid #0451b0;
-            border-radius: 4px;
-            gap: 50px;
-            max-width: 80%;
-            /* 80% de la largeur de l'écran */
-            width: 800px;
-            /* Largeur fixe du formulaire */
-            margin: 0 auto;
-            /* Centrage horizontal */
-            height: 80vh;
-            /* 80% de la hauteur de l'écran */
-            /* Centrage vertical */
+            /* align-items: center; */
+            justify-content: space-between;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+            height: 50vh;
+            width: 100%;
+            margin-bottom: 2rem;
         }
 
         .login-form-container .text {
-            font-size: 45px;
-            color: #0451b0;
+            font-size: 2rem;
+            color: #3498db;
+            margin-bottom: 20px;
         }
 
         .input-field {
-            width: 80%;
-            border: 2px solid #1e9dfe;
-            padding: 8px;
+            width: 100%;
+            border: 1px solid #ddd;
+            padding: 12px;
             border-radius: 4px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         .button {
-            background-color: #0451b0;
+            background-color: #3498db;
             color: white;
             font-weight: 600;
             border: none;
-            padding: 15px 40px;
+            padding: 15px;
             border-radius: 4px;
             transition: background-color 0.3s, box-shadow 0.3s;
             cursor: pointer;
         }
 
-
         .button:hover {
-            background-color: #1367a7;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background-color: #2980b9;
+        }
+
+        .link {
+            color: #3498db;
+            text-decoration: none;
+            margin-top: 10px;
+            display: block;
+            text-align: center;
+        }
+
+        .link:hover {
+            text-decoration: underline;
         }
 
         @media screen and (max-width: 900px) {
@@ -107,9 +113,9 @@
             <center>
                 <div class="">
                     <input type="text" name="phone" class="input-field" value="{{ old('phone') }}"
-                           placeholder="Numéro de téléphone" required>
+                        placeholder="Numéro de téléphone" required>
                     <input type="password" name="password" class="input-field" value="{{ old('password') }}"
-                           placeholder="Mot de passe" required>
+                        placeholder="Mot de passe" required>
                 </div>
             </center>
 

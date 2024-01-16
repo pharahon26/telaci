@@ -2,95 +2,81 @@
 @section('content')
     <style>
         .registration-form-container {
-            height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-evenly;
             align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
 
         .registration-form-container form {
             display: flex;
-            align-items: center;
-            justify-content: space-evenly;
             flex-direction: column;
-            /*border: 3px solid #1e9dfe;*/
-            border-radius: 4px;
-            gap: 20px;
-            width: 800px;
-            /* Largeur fixe du formulaire */
-            margin: 0 auto;
-            /* Centrage horizontal */
-            height: 100vh;
-            /* 80% de la hauteur de l'écran */
-            /* Centrage vertical */
+            /* align-items: center; */
+            justify-content: space-between;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+            height: 90vh;
+            width: 100%;
+            margin-bottom: 2rem;
         }
 
         .registration-form-container .text {
-            font-size: 45px;
-            color: #0451b0;
-            margin-top: 100px;
+            font-size: 2rem;
+            color: #3498db;
+            /* text-align: center; */
+            margin-bottom: 20px;
         }
 
-        .input-field {
-            width: 80%;
-            border: 2px solid #0451b0;
-            padding: 8px;
+        .input-field,
+        .photo-input {
+            width: 100%;
+            border: 1px solid #ced4da;
+            padding: 12px;
             border-radius: 4px;
+            margin-bottom: 20px;
         }
 
         .checkbox-label {
             display: flex;
+            align-items: center;
             font-weight: bold;
-        }
-
-        .checkbox-label p {
-            color: #1e9dfe;
-            margin-right: 1rem;
+            color: #007bff;
+            margin-bottom: 20px;
         }
 
         .checkbox-label input {
-            border: 2px solid #1e9dfe;
+            margin-right: 10px;
         }
 
         .button {
-            background-color: #0451b0;
+            background-color: #3498db;
             color: white;
             font-weight: 600;
             border: none;
-            padding: 15px 40px;
+            padding: 15px;
             border-radius: 4px;
             transition: background-color 0.3s, box-shadow 0.3s;
             cursor: pointer;
         }
 
-
         .button:hover {
-            background-color: #0451b0;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background-color: #2980b9;
         }
 
-        /* ... (autres styles) */
-
-        .photo-label {
-            display: flex;
-            flex-direction: column;
-            /* align-items: center; */
-            width: 80%;
-            color: #1e9dfe;
-            font-weight: bold;
+        .link {
+            color: #007bff;
+            text-decoration: none;
+            margin-top: 10px;
+            display: block;
+            text-align: center;
         }
 
-        .photo-input {
-            margin-top: 8px;
-            width: 100%;
-            color: gray;
-            border: 2px solid #1e9dfe;
-            padding: 8px;
-            border-radius: 4px;
+        .link:hover {
+            text-decoration: underline;
         }
-
-        /* ... (autres styles) */
 
         @media screen and (max-width: 900px) {
             .registration-form-container form {
@@ -129,14 +115,13 @@
         }
     </style>
     <div class="registration-form-container">
-        <form action="{{ route('inscription.store') }}" method="post" enctype="multipart/form-data" >
+        <form action="{{ route('inscription.store') }}" method="post" enctype="multipart/form-data">
             @csrf
             <h1 class="text">Inscription</h1>
             @include('components.message')
-            <input type="text" name="nom" class="input-field" value="{{ old('nom') }}" required
-                   placeholder="Nom">
+            <input type="text" name="nom" class="input-field" value="{{ old('nom') }}" required placeholder="Nom">
             <input type="text" name="prenom" class="input-field" value="{{ old('prenom') }}" required
-                   placeholder="Prenom">
+                placeholder="Prenom">
             <input type="text" name="phone" class="input-field" placeholder="Numéro de téléphone"
                 value="{{ old('phone') }}" required>
             <label for="" class="photo-label">
@@ -150,7 +135,7 @@
             <input type="password" name="password_confirmation" placeholder="Confirmer le mot de passe" class="input-field"
                 value="{{ old('password_confirmation') }}" required>
 
-            <a href="{{route('condition.index')}}">Consulter les conditions générales d'utilisations</a>
+            <a href="{{ route('condition.index') }}">Consulter les conditions générales d'utilisations</a>
 
             <label for="" class="text-black">Accepter les conditions générales d'utilisations</label>
             <div>

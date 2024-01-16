@@ -4,7 +4,7 @@
         <h3 class="text-center">POLITIQUE DE CONFIDENTIALITE</h3>
         <h4>PRESENTATION</h4>
         <p class="text-black text-justify">
-            <font size="+1">
+            <font size="3">
                 Nous vous remercions d’utiliser notre site web, notre application et nos services. Nous
                 sommes Tela, représentée par DOUON MANOU FRANCIS BLANCHARD, personne physique
                 reconnue aussi comme BSPRO, Société individuelle de Droit Ivoirien, immatriculée au Registre
@@ -43,7 +43,7 @@
             </font>
         </p>
         <h4>CONTACT</h4>
-        <font size="+1">
+        <font size="3">
             Vous pouvez nous contacter pour toute question d'ordre général, les soucis concernant
             l'utilisation de nos services ou si vous avez un commentaire concernant la présente Politique
             de confidentialité et les avis complémentaires ou sur la manière dont nous traitons vos
@@ -123,7 +123,7 @@
             votre (vos) nom(s) complet(s), votre numéro d'identité émis par le gouvernement, et votre
             date de naissance. Ces données nous permettent de vérifier votre identité afin de vous
             proposer nos services <br>
-           <b> Données de contact </b>: (tels que votre passeport ou toute carte d'identité émise par le
+            <b> Données de contact </b>: (tels que votre passeport ou toute carte d'identité émise par le
             gouvernement), une photographie (le cas échéant) et toute autre information
             d'enregistrement que vous pouvez fournir pour prouver que vous êtes éligible pour utiliser
             nos services ; <br>
@@ -206,7 +206,7 @@
             site Web, nos produits ou services et les expériences des utilisateurs. <br>
             - À d'autres fins pour
             lesquelles nous fournissons un avis spécifique au moment de la collecte.
-<h3>SÉCURITÉ DES DONNÉES PERSONNELLES</h3>
+            <h3>SÉCURITÉ DES DONNÉES PERSONNELLES</h3>
             La sécurité des informations personnelles est importante pour Tela représenté par DOUN
             MANOU FRANCIS BLANCHARD. Nous nous engageons à protéger les informations que nous
             collectons. Nous maintenons des contrôles administratifs, techniques et physiques conçus
@@ -252,7 +252,7 @@
             Si Tela est impliqué dans une fusion, <br> une acquisition ou toute forme de vente de tout ou partie
             de ses actifs, <br> nous vous en informerons avant que les informations personnelles ne soient
             transférées et soumises à une politique de confidentialité différente. <br>
-<h3>MARKETING</h3>
+            <h3>MARKETING</h3>
             Nous pouvons traiter vos informations personnelles afin de vous contacter ou de vous envoyer
             du contenu marketing et des communications sur nos produits, services ou sondages. Vous
             pouvez exercer votre droit de vous opposer à un tel contact de notre part ou de vous retirer
@@ -278,7 +278,8 @@
             informations que vous jugez incomplètes. - Droit de vous opposer au traitement de vos
             informations personnelles à des fins de marketing. Vous avez le droit de nous demander de
             ne pas vous contacter à des fins de marketing en ajustant votre préférence de notification sur
-            la page des paramètres ou en vous désinscrivant via le lien de désabonnement dans les emails marketing que nous vous envoyons. - Droit de vous opposer au traitement : Vous avez
+            la page des paramètres ou en vous désinscrivant via le lien de désabonnement dans les emails marketing que nous
+            vous envoyons. - Droit de vous opposer au traitement : Vous avez
             le droit de vous opposer au traitement de vos Informations personnelles dans certaines
             circonstances. Veuillez noter que si vous vous opposez à ce que nous traitions vos
             informations personnelles, nous pourrions être dans l'incapacité de vous fournir les services.
